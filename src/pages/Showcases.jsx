@@ -1,155 +1,252 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import AddEditShowcases from '../components/Modals/AddEditShowcases'
+import CategoryShowcases from './CategoryShowcases'
+import DeleteModal from '../components/Modals/DeleteModal'
+import MyPicker from '../components/commanComponents/MyPicker'
+import { useDispatch, useSelector } from 'react-redux'
+import { addNewShowcases, getAllShowcases, updateShowcases } from '../redux/admin/slices/showcases'
+import { deleteDate } from '../redux/admin/slices/libraryCategorySlice'
+import Pagination from '../components/commanComponents/Pagination';
 
 const Showcases = () => {
+    const hasFetched = useRef(false);
+    const dispatch = useDispatch()
+    const { showcasesData } = useSelector((state) => state.showcase);
+    const [openCategory, setOpenCategory] = useState(false)
+    const [dateRange, setDateRange] = useState({ startDate: null, endDate: null });
+    const [allShowcase, setAllShowcase] = useState([])
+    const [editedData, setEditedData] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [selectedId, setSelectedId] = useState('')
+    const [filteredData, setFilteredData] = useState(null)
+    const [search, setSearch] = useState('')
+    const itemsPerPage = 10;
+
+    useEffect(() => {
+        if (hasFetched.current) return;
+        hasFetched.current = true;
+        dispatch(getAllShowcases())
+    }, [])
+
+    useEffect(() => {
+        if (showcasesData) {
+            setAllShowcase(showcasesData);
+        }
+    }, [dispatch, showcasesData])
+
+    console.log("allShowcase", allShowcase)
+
+    const handleClose = () => {
+        // setSelectedTemplate(null)
+        setSelectedId('');
+    }
+
+
+    const handleDelete = async () => {
+        try {
+            await dispatch(deleteDate({ id: selectedId, type: 'showcase' }))
+            dispatch(getAllShowcases())
+            setSelectedId('');
+        } catch (error) {
+            console.log("error from library page", error)
+        }
+    }
+
+    const handleOpenCloseCate = () => {
+        setOpenCategory(!openCategory)
+    }
+
+    useEffect(() => {
+        const showcases = Array.isArray(allShowcase) ? allShowcase : [];
+        let filtered = [...showcases];
+        if (search) {
+            const term = search.toLowerCase();
+            filtered = filtered.filter(item =>
+                item?.showcase_name?.toLowerCase().includes(term)
+            );
+        }
+        // if (searchTearm == 'Active') {
+        //     filtered = filtered.filter(item => item.is_active == 1);
+
+        // } else if (searchTearm == 'In Active') {
+        //     filtered = filtered.filter(item => item.is_active == 0);
+        // }
+        if (dateRange.startDate && dateRange.endDate) {
+            const start = new Date(dateRange.startDate).setHours(0, 0, 0, 0);
+            const end = new Date(dateRange.endDate).setHours(23, 59, 59, 999);
+            filtered = filtered.filter(item => {
+                const itemDate = new Date(item.createdAt).getTime();
+                return itemDate >= start && itemDate <= end;
+            });
+        }
+        setFilteredData(filtered);
+        setCurrentPage(1)
+    }, [allShowcase, search, , dateRange]);
+
+
+
+    const handleRange = (startDate, endDate) => {
+        setDateRange({ startDate, endDate });
+    };
+
+    const totalItems = filteredData?.length;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const currentItems = filteredData?.slice(startIndex, startIndex + itemsPerPage);
+
+
+
+    const handleSubmit = async (updatedData) => {
+        // let res;
+        updatedData.id ?
+            dispatch(updateShowcases(updatedData)) :
+            dispatch(addNewShowcases(updatedData))
+        dispatch(getAllShowcases())
+    }
+
+
     return (
         <>
-            <div className="content">
-                <div className="main-content">
-                    <h2 className="heading-content">Showcases</h2>
-                    <p className="text-content">Manage your DreamDraper platform</p>
+            {
+                openCategory ? (
+                    <CategoryShowcases onBack={handleOpenCloseCate} />
+                ) : (
+                    <div className="content">
+                        <div className="main-content">
+                            <h2 className="heading-content">Showcases</h2>
+                            <p className="text-content">Manage your DreamDraper platform</p>
 
-                    <div className="table-content">
-                        <div className="content-header">
-                            <div className="search-align">
-                                <img src="./images/search.svg" className="magnify" />
-                                <input type="text" placeholder="Search User Name" className="search-content" />
+                            <div className="table-content">
+                                <div className="content-header">
+                                    <div className="search-align">
+                                        <img src="./images/search.svg" className="magnify" />
+                                        <input type="text" placeholder="Search User Name" className="search-content" onChange={(e) => setSearch(e.target.value)} />
+                                    </div>
+                                    <div className="content-right">
+                                        {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
+                                        <MyPicker handleDateFilter={handleRange} />
+                                        <a href="#"
+                                            // style="text-decoration: none;"
+                                            style={{
+                                                textDecoration: 'none'
+                                            }}
+                                        > <button type="button" className="template-upload"
+                                            style={{
+                                                width: "auto",
+                                                justifyContent: 'center',
+                                                gap: "6px"
+                                            }}
+                                            // style="width: auto; justify-content: center; gap: 6px;"
+                                            onClick={handleOpenCloseCate}
+                                        >
+                                                Category Manager
+                                            </button></a>
+                                        <button type="button" className="template-upload"
+                                            style={{
+                                                width: 'auto',
+                                                justifyContent: 'center',
+                                                gap: '6px'
+                                            }}
+                                            // style="width: auto; justify-content: center; gap: 6px;"
+                                            data-bs-toggle="modal" data-bs-target="#uploadTemplateModal">
+                                            <img src="./images/white-plus.svg" className="template" /> Add Tutorial
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="table-container">
+                                    <div className="scroll-table">
+                                        <table className="custom-table">
+                                            <thead>
+                                                <tr>
+                                                    <th
+                                                        style={{
+                                                            width: '40px'
+                                                        }}
+                                                    // style="width: 40px;"
+                                                    >S.No.</th>
+                                                    <th className="table-expand">Title</th>
+                                                    <th className="table-expand">Category</th>
+                                                    <th className="table-expand">Date Added</th>
+                                                    <th className="table-expand">Action</th>
+                                                </tr>
+                                            </thead>
+                                            {
+                                                <tbody>
+                                                    {currentItems && currentItems.length > 0 ? (
+                                                        currentItems.map((item, index) => (
+                                                            <tr key={item.id}>
+                                                                <td>{index + 1}</td>
+                                                                <td className="tutorials-data">{item.showcase_name}</td>
+                                                                <td>{item.category.category_name}</td>
+                                                                <td className="main-cat">{new Date(item.createdAt).toLocaleDateString()}</td>
+                                                                <td>
+                                                                    {/* Edit Button */}
+                                                                    <img
+                                                                        src="./images/editsolid.svg"
+                                                                        className="icon-table"
+                                                                        style={{ display: 'inline-block', cursor: 'pointer' }}
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#uploadTemplateModal"
+                                                                        onClick={() => setEditedData(item)} // Fill modal with selected item
+                                                                    />
+
+                                                                    {/* Delete Button */}
+                                                                    <img
+                                                                        src="./images/del-solid.svg"
+                                                                        className="icon-table"
+                                                                        style={{ display: 'inline-block', cursor: 'pointer' }}
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#deleteDesign"
+                                                                        onClick={() => setSelectedId(item.id)} // Store id for deletion
+                                                                    />
+                                                                </td>
+                                                            </tr>
+                                                        ))
+                                                    ) : (
+                                                        <tr>
+                                                            <td colSpan={5} style={{ textAlign: 'center' }}>
+                                                                No showcases found
+                                                            </td>
+                                                        </tr>
+                                                    )}
+                                                </tbody>
+                                            }
+                                        </table>
+                                    </div>
+
+                                    {/* <!-- Pagination --> */}
+
+                                    <Pagination
+                                        currentPage={currentPage}
+                                        totalItems={totalItems}
+                                        itemsPerPage={itemsPerPage}
+                                        onPageChange={setCurrentPage}
+                                    />
+
+                                    {/* <div className="pagination">
+                                        <button>&laquo;</button>
+                                        <button>&lt;</button>
+                                        <button className="active">1</button>
+                                        <button>2</button>
+                                        <button>3</button>
+                                        <button>...</button>
+                                        <button>10</button>
+                                        <button>&gt;</button>
+                                        <button>&raquo;</button>
+                                    </div> */}
+                                </div>
                             </div>
-                            <div className="content-right">
 
-                                <img className="datepicker" src="./images/datepicker.svg" />
-                                <a href="categoryShowcases.html"
-                                    // style="text-decoration: none;"
-                                    style={{
-                                        textDecoration: 'none'
-                                    }}
-                                > <button type="button" className="template-upload"
-                                    style={{
-                                        width: "auto",
-                                        justifyContent: 'center',
-                                        gap: "6px"
-                                    }}
-                                // style="width: auto; justify-content: center; gap: 6px;"
-                                >
-                                        Category Manager
-                                    </button></a>
-                                <button type="button" className="template-upload"
-                                    style={{
-                                        width: 'auto',
-                                        justifyContent: 'center',
-                                        gap: '6px'
-                                    }}
-                                    // style="width: auto; justify-content: center; gap: 6px;"
-                                    data-bs-toggle="modal" data-bs-target="#uploadTemplateModal">
-                                    <img src="./images/white-plus.svg" className="template" /> Add Tutorial
-                                </button>
-
-
-                            </div>
-                        </div>
-                        <div className="table-container">
-                            <div className="scroll-table">
-                                <table className="custom-table">
-                                    <thead>
-                                        <tr>
-                                            <th
-                                                style={{
-                                                    width: '40px'
-                                                }}
-                                            // style="width: 40px;"
-                                            >S.No.</th>
-                                            <th className="table-expand">Title</th>
-                                            <th className="table-expand">Category</th>
-                                            <th className="table-expand">Date Added</th>
-                                            <th className="table-expand">Action</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>01</td>
-                                            <td className="tutorials-data">Showcases 01</td>
-
-                                            <td>Bedroom</td>
-                                            <td className="main-cat">12/02/2025</td>
-
-
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" style={{
-                                                     display:'inline-block'
-                                                }}
-                                                //  onclick="openSuspendUser()" 
-                                                />
-                                                <img src="./images/del-solid.svg" className="icon-table" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteDesign" style={{
-                                                     display:'inline-block'
-                                                }}/>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>02</td>
-                                            <td className="tutorials-data">Showcases 02</td>
-
-                                            <td>Living Room</td>
-                                            <td className="main-cat">10/02/2025</td>
-
-
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table"  style={{
-                                                     display:'inline-block'
-                                                }}
-                                                // onclick="openSuspendUser()"
-                                                 />
-                                                <img src="./images/del-solid.svg" className="icon-table" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteDesign" style={{
-                                                     display:'inline-block'
-                                                }}/>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>03</td>
-                                            <td className="tutorials-data">Showcases 03</td>
-
-                                            <td>Kitchen</td>
-                                            <td className="main-cat">09/02/2025</td>
-
-
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" style={{
-                                                     display:'inline-block'
-                                                }}
-                                                // onclick="openSuspendUser()"
-                                                 />
-                                                <img src="./images/del-solid.svg" className="icon-table" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteDesign" style={{
-                                                     display:'inline-block'
-                                                }}/>
-                                            </td>
-
-                                        </tr>
-                                        {/* <!-- Add more rows --> */}
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            {/* <!-- Pagination --> */}
-                            <div className="pagination">
-                                <button>&laquo;</button>
-                                <button>&lt;</button>
-                                <button className="active">1</button>
-                                <button>2</button>
-                                <button>3</button>
-                                <button>...</button>
-                                <button>10</button>
-                                <button>&gt;</button>
-                                <button>&raquo;</button>
-                            </div>
                         </div>
                     </div>
+                )
+            }
 
-                </div>
-            </div>
+            <AddEditShowcases editedData={editedData} onSubmit={handleSubmit} />
+            <DeleteModal
+                onClose={handleClose}
+                onConfirm={handleDelete}
+                type={'templete'}
+            />
         </>
     )
 }

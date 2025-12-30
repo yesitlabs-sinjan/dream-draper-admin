@@ -67,3 +67,24 @@ export const changeTurorialCategory = (formData) => API.post('/admin/update-tuto
 export const getAllTutorails = () => API.get('/admin/all-tutorials')
 export const newTutorails = (formData) => API.post('/admin/add-tutorial', formData)
 export const changesInTutorails = (formData) => API.post('/admin/update-tutorials', formData)
+
+// Showcases   
+export const addNewShowcasesCategory = (formData) => API.post('/admin/add-showcase-category', formData)
+export const changeShowcasesCategory = (formData) => API.post('/admin/update-showcase-category', formData)
+export const addShowcases = (formData) => API.post('/admin/add-showcases', formData)
+export const allShowcases = () => API.get('/admin/get-all-showcase')
+export const changeShowcases = (formData) => API.post('/admin/update-showcase', formData)
+
+
+//Plan Management
+export const featchAllPlans = () => API.get('/admin/all-plans')
+export const newPlans = (formData) => API.post('/admin/add-plan', formData)
+export const chagePlansDaitles = (formData) => API.post('/admin/update-plan', formData)
+
+// Subscribers
+export const fetchAllSubscribers = () => API.get('/admin/get-subscribers')
+
+// Measuring Forms
+export const fetchAllMeasuringForms = () => API.get('/admin/get-forms');
+export const addNewMeasuringForms = (formData) => API.post('/admin/new-forms', formData);
+export const changeMeasuringForms = (formData) => API.post('/admin/updates-forms', formData);

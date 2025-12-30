@@ -17,7 +17,6 @@ const getTimeAgo = (timestamp) => {
     if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
     return `${days} day${days > 1 ? "s" : ""} ago`;
 };
-
 const ProjectManagement = () => {
     const hasFetched = useRef(false);
     const dispatch = useDispatch();
@@ -31,20 +30,17 @@ const ProjectManagement = () => {
     const [dateRange, setDateRange] = useState({ startDate: null, endDate: null });
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-
     useEffect(() => {
         if (hasFetched.current) return;
         hasFetched.current = true;
         dispatch(fetchAllUserByProject())
     }, []);
-
     useEffect(() => {
         if (allUserByProject) {
             setAllUsers(allUserByProject)
             setLoading(false)
         }
     }, [allUserByProject]);
-
     useEffect(() => {
         const list = Array.isArray(allUsers) ? allUsers : [];
         let filtered = [...list];

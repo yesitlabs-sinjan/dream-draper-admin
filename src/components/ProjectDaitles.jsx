@@ -118,7 +118,6 @@ const ProjectDaitles = ({ user, onBack }) => {
                                             style={{
                                                 display: "flex",
                                                 justifyContent: "space-between",
-
                                             }}
                                         >
                                             {rowProjects.map((project) => (
@@ -135,7 +134,7 @@ const ProjectDaitles = ({ user, onBack }) => {
                                                         <img src="./images/projName.svg" alt="Project" />
 
                                                         <div className="details-user">
-                                                            <p className="users-name">{project.project_name}</p>
+                                                            <p className="users-name">{project.projectName}</p>
                                                             <p className="user-detail">
                                                                 ID: #{project.uuid}
                                                             </p>

@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { allPlans } from "../../redux/admin/slices/adminSlices";
 
 
 const AddAndEditUser = ({ editedData = {}, onSubmit }) => {
+    const hasFetched = useRef(false);
     const dispatch = useDispatch();
     const { plans } = useSelector((state) => state.user)
     const [allPlan, setAllPlan] = useState([])
-    console.log("editedData", editedData);
-    console.log("plans", plans);
     useEffect(() => {
+        if (hasFetched.current) return;
+        hasFetched.current = true;
         dispatch(allPlans())
     }, []);
     useEffect(() => {
@@ -190,7 +191,7 @@ const AddAndEditUser = ({ editedData = {}, onSubmit }) => {
                             >
                                 Cancel
                             </button>
-                            <button type="submit" className="uploadSubmit"  data-bs-dismiss="modal">
+                            <button type="submit" className="uploadSubmit" data-bs-dismiss="modal">
                                 {editedData?.id ? "Update User" : "Add User"}
                             </button>
                         </div>

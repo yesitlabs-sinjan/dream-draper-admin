@@ -22,7 +22,7 @@ const SubCategory = () => {
     const itemsPerPage = 10;
 
     useEffect(() => {
-        if (hasFetched.current) return;
+       if (hasFetched.current) return;
         hasFetched.current = true;
         setLoading(true);
         dispatch(getCategory({ type: 'sub_category' }))
