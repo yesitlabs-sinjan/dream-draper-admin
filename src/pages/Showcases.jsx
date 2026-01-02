@@ -34,13 +34,10 @@ const Showcases = () => {
         }
     }, [dispatch, showcasesData])
 
-    console.log("allShowcase", allShowcase)
-
     const handleClose = () => {
         // setSelectedTemplate(null)
         setSelectedId('');
     }
-
 
     const handleDelete = async () => {
         try {
@@ -83,8 +80,6 @@ const Showcases = () => {
         setCurrentPage(1)
     }, [allShowcase, search, , dateRange]);
 
-
-
     const handleRange = (startDate, endDate) => {
         setDateRange({ startDate, endDate });
     };
@@ -93,17 +88,14 @@ const Showcases = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentItems = filteredData?.slice(startIndex, startIndex + itemsPerPage);
 
-
-
     const handleSubmit = async (updatedData) => {
         // let res;
         updatedData.id ?
-            dispatch(updateShowcases(updatedData)) :
-            dispatch(addNewShowcases(updatedData))
-        dispatch(getAllShowcases())
+            await dispatch(updateShowcases(updatedData)) :
+            await dispatch(addNewShowcases(updatedData))
+        await dispatch(getAllShowcases());
+
     }
-
-
     return (
         <>
             {
@@ -147,7 +139,7 @@ const Showcases = () => {
                                                 gap: '6px'
                                             }}
                                             // style="width: auto; justify-content: center; gap: 6px;"
-                                            data-bs-toggle="modal" data-bs-target="#uploadTemplateModal">
+                                            data-bs-toggle="modal" data-bs-target="#uploadTemplateModal" onClick={() => setEditedData(null)}>
                                             <img src="./images/white-plus.svg" className="template" /> Add Tutorial
                                         </button>
                                     </div>

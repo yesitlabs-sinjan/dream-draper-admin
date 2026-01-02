@@ -291,7 +291,7 @@ const AddEditForm = ({ initialValues = null, onSubmit }) => {
                             <button type="button" className="uploadCancel" data-bs-dismiss="modal">
                                 Cancel
                             </button>
-                            <button type="submit" className="uploadSubmit" data-bs-dismiss="modal">
+                            <button type="submit" className="uploadSubmit" data-bs-dismiss={!Object.values(formik.errors).some(err => err) ? "modal" : undefined}>
                                 {initialValues ? 'Update Form' : 'Add Form'}
                             </button>
                         </div>

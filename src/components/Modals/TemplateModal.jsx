@@ -163,7 +163,6 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
         closeModal();
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -401,7 +400,7 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                 aria-label="Close">
                 Cancel
               </button>
-              <button type="submit" className="uploadSubmit" data-bs-dismiss="modal">
+              <button type="submit" className="uploadSubmit" data-bs-dismiss={!Object.values(formik.errors).some(err => err) ? "modal" : undefined}>
                 {isEdit ? "Update" : "Submit"}
               </button>
             </div>

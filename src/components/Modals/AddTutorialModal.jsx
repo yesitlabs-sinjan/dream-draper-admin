@@ -503,7 +503,7 @@ const AddTutorialModal = ({ initialData = null, onSubmit, onReset }) => {
                                 Cancel
                             </button>
                             <button type="submit" className="uploadSubmit"
-                                data-bs-dismiss="modal"
+                               data-bs-dismiss={!Object.values(formik.errors).some(err => err) ? "modal" : undefined}
                             >
                                 {isEdit ? 'Update Tutorial' : 'Add Tutorial'}
                             </button>

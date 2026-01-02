@@ -288,7 +288,7 @@ const LoginModal = () => {
               </p>
 
               {/* Submit */}
-              <button type="submit" className="login-btn">
+              <button type="submit" className="login-btn" data-bs-dismiss="modal">
                 <span className="login-link">Log In</span>
               </button>
             </form>

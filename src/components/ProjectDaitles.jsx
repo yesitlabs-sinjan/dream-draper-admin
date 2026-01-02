@@ -76,7 +76,7 @@ const ProjectDaitles = ({ user, onBack }) => {
                     <button className="back-btn" onClick={() => onBack()}><img src="./images/btn-back.svg" className="arrow-back" /> Back</button>
                 </div>
                 <div className="nameBlock-user">
-                    <img src="./images/table-img.svg" />
+                    <img src={`${userDaitles?.profileImage ? userDaitles?.profileImage : './images/table-img.svg'}`} />
                     <div className="details-user">
                         <div className="details-top">
                             <p>{userDaitles?.name}</p>

@@ -37,11 +37,11 @@ const CategoryShowcases = ({ onBack }) => {
     }, [mainCategoryData])
 
     const handleSubmit = async (updatedData) => {
-        console.log("updatedData", updatedData)
-        let res;
-        editData.id ?
-            res = await dispatch(updateShowcasesCategory(updatedData)) :
-            res = await dispatch(addShowcasesCategory(updatedData))
+        console.log("updatedData", updatedData);
+
+        editData ?
+            await dispatch(updateShowcasesCategory(updatedData)) :
+            await dispatch(addShowcasesCategory(updatedData))
         dispatch(getCategory({ type: 'showcase_category' }))
     }
 
