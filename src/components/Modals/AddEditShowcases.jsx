@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { getCategory } from '../../redux/admin/slices/libraryCategorySlice';
 
@@ -109,7 +109,7 @@ const AddEditShowcases = ({ editedData, onSubmit }) => {
                                             {category &&
                                                 category.map((item) => (
                                                     <option key={item.id} value={item.id}>
-                                                        {item.category_name}
+                                                        {item?.category_name}
                                                     </option>
                                                 ))}
                                         </Field>
