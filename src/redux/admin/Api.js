@@ -27,7 +27,6 @@ export const getAllPlans = () => API.get('/admin/all-plans');
 export const updateUserProfile = (formData) => API.post('/admin/update-user', formData);
 export const addNewUser = (formData) => API.post('/admin/add-user', formData);
 
-
 // Library Category And Sub Category 
 export const mainCategory = (formData) => API.post("/admin/all-custom-category", formData)
 export const addMainCategory = (formData) => API.post("/admin/new-main-category", formData)

@@ -59,7 +59,7 @@ const Showcases = () => {
         if (search) {
             const term = search.toLowerCase();
             filtered = filtered.filter(item =>
-                item?.showcase_name?.toLowerCase().includes(term)
+                item?.title?.toLowerCase().includes(term)
             );
         }
         // if (searchTearm == 'Active') {
@@ -88,9 +88,10 @@ const Showcases = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentItems = filteredData?.slice(startIndex, startIndex + itemsPerPage);
 
-    const handleSubmit = async (updatedData) => {
+    const handleSubmit = async (updatedData, isEdit) => {
         // let res;
-        updatedData.id ?
+        console.log("isEdit", isEdit)
+        isEdit ?
             await dispatch(updateShowcases(updatedData)) :
             await dispatch(addNewShowcases(updatedData))
         await dispatch(getAllShowcases());
@@ -167,8 +168,8 @@ const Showcases = () => {
                                                         currentItems.map((item, index) => (
                                                             <tr key={item.id}>
                                                                 <td>{index + 1}</td>
-                                                                <td className="tutorials-data">{item.showcase_name}</td>
-                                                                <td>{item.category.category_name}</td>
+                                                                <td className="tutorials-data">{item?.title}</td>
+                                                                <td>{item?.category?.category_name}</td>
                                                                 <td className="main-cat">{new Date(item.createdAt).toLocaleDateString()}</td>
                                                                 <td>
                                                                     {/* Edit Button */}
@@ -233,7 +234,7 @@ const Showcases = () => {
                 )
             }
 
-            <AddEditShowcases editedData={editedData} onSubmit={handleSubmit} />
+            <AddEditShowcases initialData={editedData} onSubmit={handleSubmit} />
             <DeleteModal
                 onClose={handleClose}
                 onConfirm={handleDelete}
