@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import AddEditShowcases from '../components/Modals/AddEditShowcases'
-import CategoryShowcases from './CategoryShowcases'
 import DeleteModal from '../components/Modals/DeleteModal'
 import MyPicker from '../components/commanComponents/MyPicker'
-import { useDispatch, useSelector } from 'react-redux'
-import { addNewShowcases, getAllShowcases, updateShowcases } from '../redux/admin/slices/showcases'
+import Pagination from '../components/commanComponents/Pagination'
+import SearchBox from '../components/table/SearchBox'
 import { deleteDate } from '../redux/admin/slices/libraryCategorySlice'
-import Pagination from '../components/commanComponents/Pagination';
+import { addNewShowcases, getAllShowcases, updateShowcases } from '../redux/admin/slices/showcases'
+import { formatDateUSA } from '../utils/healper/dateHelper'
+import CategoryShowcases from './CategoryShowcases'
 
 const Showcases = () => {
     const hasFetched = useRef(false);
@@ -110,10 +112,11 @@ const Showcases = () => {
 
                             <div className="table-content">
                                 <div className="content-header">
-                                    <div className="search-align">
+                                    {/* <div className="search-align">
                                         <img src="./images/search.svg" className="magnify" />
                                         <input type="text" placeholder="Search User Name" className="search-content" onChange={(e) => setSearch(e.target.value)} />
-                                    </div>
+                                    </div> */}
+                                    <SearchBox search={search} setSearch={setSearch} />
                                     <div className="content-right">
                                         {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                                         <MyPicker handleDateFilter={handleRange} />
@@ -170,7 +173,7 @@ const Showcases = () => {
                                                                 <td>{index + 1}</td>
                                                                 <td className="tutorials-data">{item?.title}</td>
                                                                 <td>{item?.category?.category_name}</td>
-                                                                <td className="main-cat">{new Date(item.createdAt).toLocaleDateString()}</td>
+                                                                <td className="main-cat">{formatDateUSA(item.createdAt)}</td>
                                                                 <td>
                                                                     {/* Edit Button */}
                                                                     <img
@@ -180,6 +183,7 @@ const Showcases = () => {
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#uploadTemplateModal"
                                                                         onClick={() => setEditedData(item)} // Fill modal with selected item
+                                                                        alt="Edit Icon"
                                                                     />
 
                                                                     {/* Delete Button */}
@@ -190,6 +194,7 @@ const Showcases = () => {
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#deleteDesign"
                                                                         onClick={() => setSelectedId(item.id)} // Store id for deletion
+                                                                        alt="Delete Icon"
                                                                     />
                                                                 </td>
                                                             </tr>

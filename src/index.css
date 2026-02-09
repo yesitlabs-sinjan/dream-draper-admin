@@ -70,3 +70,27 @@ button:focus-visible {
 /* @tailwind base;
 @tailwind components;
 @tailwind utilities; */
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("./assets/fonts/SegoeUI-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("./assets/fonts/SegoeUI-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("./assets/fonts/SegoeUI-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

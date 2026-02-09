@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
-import AddEditCategory from '../../components/libraryCategory/AddEditCategory'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { activeInActiveCategories, addCategory, deleteDate, getCategory, UpdateCategory } from '../../redux/admin/slices/libraryCategorySlice'
-import DeleteModal from '../../components/Modals/DeleteModal'
 import ActiveAndInActiveModal from '../../components/Modals/ActiveAndInActiveModal'
-import Pagination from '../../components/commanComponents/Pagination'
+import DeleteModal from '../../components/Modals/DeleteModal'
 import MyPicker from '../../components/commanComponents/MyPicker'
+import Pagination from '../../components/commanComponents/Pagination'
+import AddEditCategory from '../../components/libraryCategory/AddEditCategory'
+import SearchBox from '../../components/table/SearchBox'
+import { activeInActiveCategories, addCategory, deleteDate, getCategory, UpdateCategory } from '../../redux/admin/slices/libraryCategorySlice'
+import { formatDateUSA } from '../../utils/healper/dateHelper'
 
 const MainCategory = () => {
     const hasFetched = useRef(false);
@@ -109,10 +111,11 @@ const MainCategory = () => {
                     <p className="text-content">Manage your DreamDraper platform</p>
                     <div className="table-content">
                         <div className="content-header">
-                            <div className="search-align">
+                            {/* <div className="search-align">
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search Main Category" className="search-content" onChange={(e) => setSearch(e.target.value)} />
-                            </div>
+                            </div> */}
+                            <SearchBox search={search} setSearch={setSearch} />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
                                 <button type="button" className="template-upload"
@@ -155,7 +158,7 @@ const MainCategory = () => {
                                                     <td className="tempName">{item.category_name}</td>
                                                     <td>
                                                         {item.createdAt
-                                                            ? new Date(item.createdAt).toLocaleDateString()
+                                                            ? formatDateUSA(item.createdAt)
                                                             : "—"}
                                                     </td>
                                                     <td>

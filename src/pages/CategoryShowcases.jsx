@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import AddEditShowcaseCategory from '../components/Modals/AddEditShowcaseCategory'
 import DeleteModal from '../components/Modals/DeleteModal'
 import MyPicker from '../components/commanComponents/MyPicker'
-import { useDispatch, useSelector } from 'react-redux'
+import Pagination from '../components/commanComponents/Pagination'
+import SearchBox from '../components/table/SearchBox'
 import { deleteDate, getCategory } from '../redux/admin/slices/libraryCategorySlice'
 import { addShowcasesCategory, updateShowcasesCategory } from '../redux/admin/slices/showcases'
-import Pagination from '../components/commanComponents/Pagination';
 
 const CategoryShowcases = ({ onBack }) => {
     const dispatch = useDispatch()
@@ -112,10 +113,11 @@ const CategoryShowcases = ({ onBack }) => {
 
                     <div class="table-content">
                         <div class="content-header">
-                            <div class="search-align">
+                            {/* <div class="search-align">
                                 <img src="./images/search.svg" class="magnify" />
                                 <input type="text" placeholder="Search category name" class="search-content" onChange={(e) => setSearch(e.target.value)} />
-                            </div>
+                            </div> */}
+                            <SearchBox search={search} setSearch={setSearch} />
                             <div class="content-right">
                                 {/* <img class="datepicker" src="./images/datepicker.svg" /> */}
                                 <MyPicker handleDateFilter={handleRange} />

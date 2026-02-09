@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllUserByProject } from '../redux/admin/slices/projectManagemetSlice';
 import ProjectDaitles from '../components/ProjectDaitles';
-import Pagination from '../components/commanComponents/Pagination';
 import MyPicker from '../components/commanComponents/MyPicker';
+import Pagination from '../components/commanComponents/Pagination';
+import SearchBox from '../components/table/SearchBox';
+import { fetchAllUserByProject } from '../redux/admin/slices/projectManagemetSlice';
+import { formatDateUSA } from '../utils/healper/dateHelper';
 
 const getTimeAgo = (timestamp) => {
     const now = new Date();
@@ -85,10 +87,11 @@ const ProjectManagement = () => {
 
                         <div className="table-content">
                             <div className="content-header">
-                                <div className="search-align">
+                                {/* <div className="search-align">
                                     <img src="./images/search.svg" className="magnify" />
                                     <input type="text" placeholder="Search User Name" className="search-content" onChange={(e) => setSearchTerm(e.target.value)} />
-                                </div>
+                                </div> */}
+                                <SearchBox search={searchTerm} setSearch={setSearchTerm} />
                                 <div className="content-right">
                                     {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                                     <MyPicker handleDateFilter={handleRange} />
@@ -129,7 +132,7 @@ const ProjectManagement = () => {
                                                             <td>{user.name}</td>
                                                             <td>{user.no_of_projects}</td>
                                                             <td>
-                                                                <p className="timendate">
+                                                                {/* <p className="timendate">
                                                                     {user.last_modified
                                                                         ? new Date(user.last_modified).toLocaleDateString()
                                                                         : ""}
@@ -141,6 +144,9 @@ const ProjectManagement = () => {
                                                                             minute: "2-digit"
                                                                         })
                                                                         : ""}
+                                                                </p> */}
+                                                                <p className='timedate'>
+                                                                    {formatDateUSA(user.last_modified, true) || ""}
                                                                 </p>
                                                             </td>
                                                             <td>{user.updated_count}</td>

@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
-import AddEditNestedCategory from '../../components/libraryCategory/AddEditNestedCategory'
-import { useDispatch, useSelector } from 'react-redux'
-import { activeInActiveCategories, addNestedCategory, deleteDate, getCategory, updateNestedCategory } from '../../redux/admin/slices/libraryCategorySlice';
-import { formatDate } from '../../utils/healper/dateHelper';
-import DeleteModal from '../../components/Modals/DeleteModal';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ActiveAndInActiveModal from '../../components/Modals/ActiveAndInActiveModal';
-import Pagination from '../../components/commanComponents/Pagination';
+import DeleteModal from '../../components/Modals/DeleteModal';
 import MyPicker from '../../components/commanComponents/MyPicker';
+import Pagination from '../../components/commanComponents/Pagination';
+import AddEditNestedCategory from '../../components/libraryCategory/AddEditNestedCategory';
+import SearchBox from '../../components/table/SearchBox';
+import { activeInActiveCategories, addNestedCategory, deleteDate, getCategory, updateNestedCategory } from '../../redux/admin/slices/libraryCategorySlice';
+import { formatDateUSA } from '../../utils/healper/dateHelper';
 
 const NestedCategory = () => {
     const hasFetched = useRef(false);
@@ -112,12 +113,13 @@ const NestedCategory = () => {
                     <p className="text-content">Manage your DreamDraper platform</p>
                     <div className="table-content">
                         <div className="content-header">
-                            <div className="search-align">
+                            {/* <div className="search-align">
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search Nested category" className="search-content"
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
-                            </div>
+                            </div> */}
+                            <SearchBox search={search} setSearch={setSearch} />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
 
@@ -162,7 +164,7 @@ const NestedCategory = () => {
                                                 <tr key={index}>
                                                     <td>{startIndex + index + 1}</td>
                                                     <td className="tempName">{item.nested_category_name || "Nested Category"}</td>
-                                                    <td>{formatDate(item.createdAt) || "12/02/2025"}</td>
+                                                    <td>{formatDateUSA(item.createdAt) || "-"}</td>
                                                     <td>
                                                         <button
                                                             style={
@@ -175,7 +177,7 @@ const NestedCategory = () => {
                                                             data-bs-target="#activateTemplateModal"
                                                             onClick={() => setSelectedSubNested(item)}
                                                         >
-                                                            {item.is_active == 1 ? "Active" : "InActive"}
+                                                            {item.is_active == 1 ? "Active" : "Inactive"}
                                                         </button>
                                                     </td>
                                                     <td>

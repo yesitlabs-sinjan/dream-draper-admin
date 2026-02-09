@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsersProject } from '../redux/admin/slices/projectManagemetSlice'
-import Pagination from './commanComponents/Pagination'
 import MyPicker from './commanComponents/MyPicker'
+import Pagination from './commanComponents/Pagination'
 
 const ProjectDaitles = ({ user, onBack }) => {
     const [dateRange, setDateRange] = useState({ startDate: null, endDate: null });
@@ -90,12 +90,12 @@ const ProjectDaitles = ({ user, onBack }) => {
                 <div className="table-content">
                     <div className="content-header">
                         <div className="search-align">
-                            <img src="./images/search.svg" className="magnify" />
+                            <img src="./images/search.svg" className="magnify" alt='search icon' />
                             <input type="text" placeholder="Search project.." className="search-content" onChange={(e) => setSearchText(e.target.value)} />
                         </div>
                         <div className="content-right">
                             <div className="dropdown">
-                                <p className="projectCounts">Project Count: {projectData?.length}</p>
+                                <p className="projectCounts">Project Count: {filteredData?.length}</p>
                             </div>
                             {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                             <MyPicker handleDateFilter={handleRange} />

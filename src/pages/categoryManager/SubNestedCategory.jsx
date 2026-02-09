@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
-import AddEditSubNestedCategory from '../../components/libraryCategory/AddEditSubNestedCategory'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { activeInActiveCategories, addSubNestedCategory, deleteDate, getCategory, updateSubNestedCategory } from '../../redux/admin/slices/libraryCategorySlice'
-import { formatDate } from '../../utils/healper/dateHelper'
-import DeleteModal from '../../components/Modals/DeleteModal'
 import ActiveAndInActiveModal from '../../components/Modals/ActiveAndInActiveModal'
-import Pagination from '../../components/commanComponents/Pagination'
+import DeleteModal from '../../components/Modals/DeleteModal'
 import MyPicker from '../../components/commanComponents/MyPicker'
+import Pagination from '../../components/commanComponents/Pagination'
+import AddEditSubNestedCategory from '../../components/libraryCategory/AddEditSubNestedCategory'
+import SearchBox from '../../components/table/SearchBox'
+import { activeInActiveCategories, addSubNestedCategory, deleteDate, getCategory, updateSubNestedCategory } from '../../redux/admin/slices/libraryCategorySlice'
+import { formatDateUSA } from '../../utils/healper/dateHelper'
 
 const SubNestedCategory = () => {
     const hasFetched = useRef(false);
@@ -109,12 +110,13 @@ const SubNestedCategory = () => {
                     <p className="text-content">Manage your DreamDraper platform</p>
                     <div className="table-content">
                         <div className="content-header">
-                            <div className="search-align">
+                            {/* <div className="search-align">
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search Sub nested category" className="search-content"
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
-                            </div>
+                            </div> */}
+                            <SearchBox search={search} setSearch={setSearch} />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
                                 <button type="button" className="template-upload"
@@ -157,7 +159,7 @@ const SubNestedCategory = () => {
                                                 <tr key={index}>
                                                     <td>{startIndex + index + 1}</td>
                                                     <td className="tempName">{subItem.sub_nested_category_name || "Nested Category 01"}</td>
-                                                    <td>{formatDate(subItem.createdAt) || "12/02/2025"}</td>
+                                                    <td>{formatDateUSA(subItem.createdAt) || "-"}</td>
                                                     <td>
                                                         <button
                                                             data-bs-toggle="modal"
@@ -170,7 +172,7 @@ const SubNestedCategory = () => {
                                                             className="status-btn-library"
                                                             onClick={() => setSelectSubNestedCat(subItem)}
                                                         >
-                                                            {subItem.is_active == 1 ? "Active" : "InActive"}
+                                                            {subItem.is_active == 1 ? "Active" : "Inactive"}
                                                         </button>
                                                     </td>
                                                     <td>

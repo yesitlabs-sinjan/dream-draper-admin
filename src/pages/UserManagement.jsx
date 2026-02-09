@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
-import DeleteModal from '../components/Modals/DeleteModal'
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser, getAllUsers, statusUpdate, updateUser } from '../redux/admin/slices/adminSlices';
-import { formatDate } from '../utils/healper/dateHelper';
-import AddAndEditUser from '../components/Modals/AddAndEditUser';
 import { ActivateModal } from '../components/Modals/ActivateUserModal';
-import Pagination from '../components/commanComponents/Pagination';
+import AddAndEditUser from '../components/Modals/AddAndEditUser';
+import DeleteModal from '../components/Modals/DeleteModal';
 import MyPicker from '../components/commanComponents/MyPicker';
+import Pagination from '../components/commanComponents/Pagination';
+import SearchBox from '../components/table/SearchBox';
+import { deleteUser, getAllUsers, statusUpdate, updateUser } from '../redux/admin/slices/adminSlices';
+import { formatDateUSA } from '../utils/healper/dateHelper';
+
 
 const UserManagement = () => {
     const hasFetched = useRef(false);
@@ -113,6 +115,8 @@ const UserManagement = () => {
     const handleRange = (startDate, endDate) => {
         setDateRange({ startDate, endDate });
     };
+
+    
     return (
         <>
             <div className="content">
@@ -122,17 +126,32 @@ const UserManagement = () => {
 
                     <div className="table-content">
                         <div className="content-header">
-                            <div className="search-align">
+                            {/* <div className="search-align">
                                 <img src="./images/search.svg" className="magnify" />
-                                <input type="text" placeholder="Search User Name" className="search-content" onChange={(e) => setSearch(e.target.value)} />
-                            </div>
+                                <input
+                                    type="text"
+                                    placeholder="Search User Name"
+                                    className="search-content"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                />
+                                {search && (
+                                    <span
+                                        className="clear-btn"
+                                        onClick={() => setSearch('')}
+                                    >
+                                        <RxCross1 color="#949494" size={15} strokeWidth={1.2} />
+                                    </span>
+                                )}
+                            </div> */}
+                            <SearchBox search={search} setSearch={setSearch} />
                             <div className="content-right">
                                 <div className="dropdown">
                                     <div className="status-btn"
                                         onClick={() => toggleDropdown()}
                                     >
                                         <span id="label">{searchTearm !== '' ? searchTearm : "Status"}</span>
-                                        <img src="./images/dropdown.svg" className="dropdown-arrow" />
+                                        <img src="./images/dropdown.svg" className="dropdown-arrow" alt='dropdown image' />
                                     </div>
                                     <div className="menu" id="dropdownMenu" style={{ zIndex: 7 }}>
                                         {
@@ -173,13 +192,15 @@ const UserManagement = () => {
                                                 <tr key={user.id || index} className="rounded-tr">
                                                     <td>{index + 1}</td>
                                                     <td>
-                                                        <img src={user.profileImage || "./images/table-img.svg"} className="table-img" alt="User" />
+                                                        {user.profileImage && (
+                                                            <img src={user.profileImage || "./images/table-img.svg"} className="table-img" alt="User" />
+                                                        )}                                                        
                                                     </td>
                                                     <td>{user.name || "N/A"}</td>
                                                     <td>{user.username || "N/A"}</td>
                                                     <td>{user.email || "N/A"}</td>
                                                     <td>{user.phone || "N/A"}</td>
-                                                    <td>{formatDate(user.createdAt) || "06-10-2025"}</td>
+                                                    <td>{formatDateUSA(user.createdAt) || "06-10-2025"}</td>
                                                     <td>
                                                         <button
                                                             style={
@@ -192,7 +213,7 @@ const UserManagement = () => {
                                                             // data-bs-target="#activateTemplateModal"
                                                             onClick={() => { setUserStatus(user), setShowActiveModal(true) }}
                                                         >
-                                                            {user.is_active == 1 ? "Active" : "InActive"}
+                                                            {user.is_active == 1 ? "Active" : "Inactive"}
                                                         </button>
                                                     </td>
                                                     <td>

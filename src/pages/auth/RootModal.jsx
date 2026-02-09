@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
-import LoginModal from './LoginModal'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import LoginModal from './LoginModal'
 
 const RootModal = () => {
     const navigate = useNavigate()
@@ -32,7 +32,7 @@ const RootModal = () => {
                     border: "none",
                     borderRadius: "10px",
                     cursor: "pointer",
-                    fontFamily: "Urbanist-Bold",
+                    fontFamily: "Segoe UI",
                     fontSize: "18px",
                 }}
             >

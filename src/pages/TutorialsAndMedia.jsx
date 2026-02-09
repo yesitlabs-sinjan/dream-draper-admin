@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
-import DeleteModal from '../components/Modals/DeleteModal';
-import AddTutorialModal from '../components/Modals/AddTutorialModal';
-import TutorialCategory from '../components/TutorialCategory';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNewTutorails, fetchAllCategory, fetchAllTutorails, updateTutorails } from '../redux/admin/slices/TutorialAndMediaSlices';
 import MyPicker from '../components/commanComponents/MyPicker';
 import Pagination from '../components/commanComponents/Pagination';
+import AddTutorialModal from '../components/Modals/AddTutorialModal';
+import DeleteModal from '../components/Modals/DeleteModal';
+import SearchBox from '../components/table/SearchBox';
+import TutorialCategory from '../components/TutorialCategory';
 import { deleteDate } from '../redux/admin/slices/libraryCategorySlice';
+import { addNewTutorails, fetchAllCategory, fetchAllTutorails, updateTutorails } from '../redux/admin/slices/TutorialAndMediaSlices';
+import { formatDateUSA } from '../utils/healper/dateHelper';
 
 const TutorialsAndMedia = () => {
     const hasFetched = useRef(false);
@@ -117,10 +119,11 @@ const TutorialsAndMedia = () => {
                             <p className="text-content">Manage your DreamDraper platform</p>
                             <div className="table-content">
                                 <div className="content-header">
-                                    <div className="search-align">
+                                    {/* <div className="search-align">
                                         <img src="./images/search.svg" className="magnify" />
                                         <input type="text" placeholder="Search tutorial" className="search-content" onChange={(e) => setSearch(e.target.value)} />
-                                    </div>
+                                    </div> */}
+                                    <SearchBox search={search} setSearch={setSearch} />
                                     <div className="content-right">
                                         {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                                         <MyPicker handleDateFilter={handleRange} />
@@ -200,7 +203,7 @@ const TutorialsAndMedia = () => {
                                                             <td className="main-cat">{tutorial.views}</td>
                                                             <td className="main-cat">{tutorial.duration}</td>
                                                             <td className="nested-cat">
-                                                                {new Date(tutorial.createdAt).toLocaleDateString("en-GB")}
+                                                                {formatDateUSA(tutorial.createdAt) || "-"}
                                                             </td>
                                                             <td>
                                                                 <img

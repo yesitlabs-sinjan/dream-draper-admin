@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
-import AddAndEditUser from '../components/Modals/AddAndEditUser'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import MyPicker from '../components/commanComponents/MyPicker'
+import Pagination from '../components/commanComponents/Pagination'
+import AddAndEditUser from '../components/Modals/AddAndEditUser'
+import SearchBox from '../components/table/SearchBox'
 import { registerUser } from '../redux/admin/slices/adminSlices'
 import { getAllSubscribers } from '../redux/admin/slices/subscriberSlice'
-import MyPicker from '../components/commanComponents/MyPicker'
-import Pagination from '../components/commanComponents/Pagination';
+import { formatDateUSA } from '../utils/healper/dateHelper'
 
 const SubscriptionManagement = () => {
     const dispatch = useDispatch();
@@ -66,12 +68,8 @@ const SubscriptionManagement = () => {
 
         setFilteredData(filtered);
         setCurrentPage(1)
-    }, [data, search, , dateRange, filterMode]);
+    }, [data, search, dateRange, filterMode]);
 
-
-
-    const formatDate = (date) =>
-        date ? new Date(date).toLocaleDateString() : '---';
 
     const statusClass = (status) => {
         if (status === 'active' || status === 'paid') return 'paid';
@@ -99,6 +97,10 @@ const SubscriptionManagement = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentItems = filteredData?.slice(startIndex, startIndex + itemsPerPage);
 
+    useEffect(() => {
+        if (currentItems)
+            console.log("sub currentItems: ",currentItems)
+    }, [currentItems]);
 
     return (
         <>
@@ -109,10 +111,11 @@ const SubscriptionManagement = () => {
 
                     <div className="table-content">
                         <div className="content-header">
-                            <div className="search-align">
+                            {/* <div className="search-align">
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search User Name" className="search-content" onChange={(e) => setSearch(e.target.value)} />
-                            </div>
+                            </div> */}
+                            <SearchBox search={search} setSearch={setSearch} />
                             <div className="content-right">
                                 <div className="manual-auto-toggle">
                                     <button className={`manual-auto-btn ${changeMode ? 'active' : ''}`} id="manual-option" onClick={() => handleSwitch('manual')}>Manual</button>
@@ -123,7 +126,7 @@ const SubscriptionManagement = () => {
                                     //  onclick="toggleDropdown()"
                                     >
                                         <span id="label">Status</span>
-                                        <img src="./images/dropdown.svg" className="dropdown-arrow" />
+                                        <img src="./images/dropdown.svg" className="dropdown-arrow" alt='dropdown icon' />
                                     </div>
                                     <div className="menu" id="dropdownMenu"
                                         style={{
@@ -153,7 +156,7 @@ const SubscriptionManagement = () => {
                                     }}
                                     // style="width: auto; justify-content: center; gap: 6px;"
                                     data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                    <img src="./images/white-plus.svg" className="template" /> Add User
+                                    <img src="./images/white-plus.svg" className="template" alt='edit icon' /> Add User
                                 </button>
                             </div>
                         </div>
@@ -196,11 +199,11 @@ const SubscriptionManagement = () => {
 
                                                     <td>{item.Plan?.plan_name || '---'}</td>
 
-                                                    <td>{formatDate(item.start_date)}</td>
+                                                    <td>{formatDateUSA(item.start_date)}</td>
 
                                                     <td className="eye-td">
                                                         <a href="#" className="view-link">
-                                                            View <img src="./images/solid-eye.svg" className="eye-img" />
+                                                            View <img src="./images/solid-eye.svg" className="eye-img" alt='eye icon'/>
                                                         </a>
                                                     </td>
 
@@ -214,6 +217,7 @@ const SubscriptionManagement = () => {
                                                         <img
                                                             src="./images/del-solid.svg"
                                                             className="icon-table"
+                                                            alt='delete icon'
                                                         />
                                                     </td>
                                                 </tr>
@@ -226,167 +230,6 @@ const SubscriptionManagement = () => {
                                             </tr>
                                         )}
                                     </tbody>
-
-                                    {/* <tbody>
-                                        <tr className="rounded-tr">
-                                            <td>01</td>
-                                            <td>Darrell Steward</td>
-                                            <td>Darrell@Steward01</td>
-                                            <td>alma.lawson@example.com</td>
-                                            <td>(270) 555-0117</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Monthly</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" style={{
-                                                    display: 'inline-block'
-                                                }} />
-                                                <img src="./images/del-solid.svg" className="icon-table" style={{
-                                                    display: 'inline-block'
-                                                }}
-                                                // onclick="opendeleteUser()"
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>02</td>
-                                            <td>Darlene Robertson</td>
-                                            <td>Darlene@Robertson01</td>
-                                            <td>tim.jennings@example.com</td>
-                                            <td>(907) 555-0101</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Yearly</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" style={{
-                                                    display: 'inline-block'
-                                                }} />
-                                                <img src="./images/del-solid.svg" className="icon-table" style={{
-                                                    display: 'inline-block'
-                                                }}
-                                                // onclick="opendeleteUser()" 
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>03</td>
-                                            <td>Kristin Watson</td>
-                                            <td>Kristin@Watson01</td>
-                                            <td>debra.holt@example.com</td>
-                                            <td>(406) 555-0120</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Yearly</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" style={{
-                                                    display: 'inline-block'
-                                                }} />
-                                                <img src="./images/del-solid.svg" className="icon-table" style={{
-                                                    display: 'inline-block'
-                                                }}
-                                                // onclick="opendeleteUser()" 
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>04</td>
-                                            <td>Bessie Cooper</td>
-                                            <td>Bessie@Cooper01</td>
-                                            <td>kenzi.lawson@example.com</td>
-                                            <td>(319) 555-0115</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Monthly</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" style={{
-                                                    display: 'inline-block'
-                                                }} />
-                                                <img src="./images/del-solid.svg" className="icon-table" style={{
-                                                    display: 'inline-block'
-                                                }}
-                                                // onclick="opendeleteUser()" 
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>05</td>
-                                            <td>Theresa Webb</td>
-                                            <td>Theresa@Webb01</td>
-                                            <td>willie.jennings@example.com</td>
-                                            <td>(702) 555-0122</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Monthly</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" style={{
-                                                    display: 'inline-block'
-                                                }} />
-                                                <img src="./images/del-solid.svg" className="icon-table" style={{
-                                                    display: 'inline-block'
-                                                }}
-                                                // onclick="opendeleteUser()" 
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>06</td>
-                                            <td>Kathryn Murphy</td>
-                                            <td>Kathryn@Murphy01</td>
-                                            <td>georgia.young@example.com</td>
-                                            <td>(229) 555-0109</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Monthly</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" style={{
-                                                    display: 'inline-block'
-                                                }} />
-                                                <img src="./images/del-solid.svg" className="icon-table" style={{
-                                                    display: 'inline-block'
-                                                }}
-                                                //  onclick="opendeleteUser()" 
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>07</td>
-                                            <td>Dianne Russell</td>
-                                            <td>Dianne@Russell01</td>
-                                            <td>michelle.rivera@example.com</td>
-                                            <td>(209) 555-0104</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Yearly</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" />
-                                                <img src="./images/del-solid.svg" className="icon-table"
-                                                // onclick="opendeleteUser()"
-                                                />
-                                            </td>
-                                        </tr>
-                                        
-                                    </tbody> */}
                                 </table>
                             </div>
 
@@ -447,11 +290,11 @@ const SubscriptionManagement = () => {
 
                                                     <td>{item.Plan?.plan_name || '---'}</td>
 
-                                                    <td>{formatDate(item.start_date)}</td>
+                                                    <td>{formatDateUSA(item.start_date)}</td>
 
                                                     <td className="eye-td">
                                                         <a href="#" className="view-link">
-                                                            View <img src="./images/solid-eye.svg" className="eye-img" />
+                                                            View <img src="./images/solid-eye.svg" className="eye-img" alt='eye icon' />
                                                         </a>
                                                     </td>
 
@@ -461,10 +304,12 @@ const SubscriptionManagement = () => {
                                                             className="icon-table"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#editUserModal"
+                                                            alt='edit icon'
                                                         />
                                                         <img
                                                             src="./images/del-solid.svg"
                                                             className="icon-table"
+                                                            alt='delete button'
                                                         />
                                                     </td>
                                                 </tr>
@@ -477,152 +322,6 @@ const SubscriptionManagement = () => {
                                             </tr>
                                         )}
                                     </tbody>
-
-
-
-                                    {/* <tbody>
-                                        <tr className="rounded-tr">
-                                            <td>01</td>
-                                            <td>Darrell Steward</td>
-                                            <td>Darrell@Steward01</td>
-                                            <td>alma.lawson@example.com</td>
-                                            <td>(270) 555-0117</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Monthly</td>
-                                            <td>Stripe</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" />
-                                                <img src="./images/del-solid.svg" className="icon-table"
-                                                //  onclick="opendeleteUser()" 
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>02</td>
-                                            <td>Darlene Robertson</td>
-                                            <td>Darlene@Robertson01</td>
-                                            <td>tim.jennings@example.com</td>
-                                            <td>(907) 555-0101</td>
-                                            <td>---</td>
-                                            <td><button className="trial">Trial</button></td>
-                                            <td>Yearly</td>
-                                            <td>Stripe</td>
-                                            <td>---</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" />
-                                                <img src="./images/del-solid.svg" className="icon-table"
-                                                //  onclick="opendeleteUser()" 
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>03</td>
-                                            <td>Kristin Watson</td>
-                                            <td>Kristin@Watson01</td>
-                                            <td>debra.holt@example.com</td>
-                                            <td>(406) 555-0120</td>
-                                            <td>---</td>
-                                            <td><button className="unpaid">Failed</button></td>
-                                            <td>Yearly</td>
-                                            <td>Stripe</td>
-                                            <td>---</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" />
-                                                <img src="./images/del-solid.svg" className="icon-table"
-                                                // onclick="opendeleteUser()"
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>04</td>
-                                            <td>Bessie Cooper</td>
-                                            <td>Bessie@Cooper01</td>
-                                            <td>kenzi.lawson@example.com</td>
-                                            <td>(319) 555-0115</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Monthly</td>
-                                            <td>Stripe</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" />
-                                                <img src="./images/del-solid.svg" className="icon-table"
-                                                //  onclick="opendeleteUser()" 
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>05</td>
-                                            <td>Theresa Webb</td>
-                                            <td>Theresa@Webb01</td>
-                                            <td>willie.jennings@example.com</td>
-                                            <td>(702) 555-0122</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Monthly</td>
-                                            <td>Stripe</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" />
-                                                <img src="./images/del-solid.svg" className="icon-table"
-                                                // onclick="opendeleteUser()" 
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>06</td>
-                                            <td>Kathryn Murphy</td>
-                                            <td>Kathryn@Murphy01</td>
-                                            <td>georgia.young@example.com</td>
-                                            <td>(229) 555-0109</td>
-                                            <td>TXN-001</td>
-                                            <td><button className="paid">Paid</button></td>
-                                            <td>Monthly</td>
-                                            <td>Stripe9</td>
-                                            <td>06-10-2025</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" />
-                                                <img src="./images/del-solid.svg" className="icon-table"
-                                                // onclick="opendeleteUser()" 
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>07</td>
-                                            <td>Dianne Russell</td>
-                                            <td>Dianne@Russell01</td>
-                                            <td>michelle.rivera@example.com</td>
-                                            <td>(209) 555-0104</td>
-                                            <td>---</td>
-                                            <td><button className="unpaid">Failed</button></td>
-                                            <td>Yearly</td>
-                                            <td>Stripe</td>
-                                            <td>---</td>
-                                            <td className="eye-td"><a href="#" className="view-link">View <img src="./images/solid-eye.svg"
-                                                className="eye-img" /></a></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal" data-bs-target="#editUserModal" />
-                                                <img src="./images/del-solid.svg" className="icon-table"
-                                                //  onclick="opendeleteUser()"
-                                                />
-                                            </td>
-                                        </tr>
-                                      
-                                    </tbody> */}
                                 </table>
                             </div>
 

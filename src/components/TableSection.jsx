@@ -1,4 +1,3 @@
-import React from "react";
 
 export default function TableSection() {
   return (
@@ -11,6 +10,7 @@ export default function TableSection() {
             placeholder="Search User Name"
             className="search-content"
           />
+          <span className="clear-btn">&times;</span>
         </div>
         <div className="content-right">
           <img className="datepicker" src="/images/datepicker.svg" />

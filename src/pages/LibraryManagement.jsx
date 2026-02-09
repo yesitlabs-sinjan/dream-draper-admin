@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import ActiveAndInActiveModal from '../components/Modals/ActiveAndInActiveModal'
 import DeleteModal from '../components/Modals/DeleteModal'
 import TemplateModal from '../components/Modals/TemplateModal'
-import { useDispatch, useSelector } from 'react-redux'
-import { activeInActiveCategories, addNewTemplate, deleteDate, getAllTemplate, updateTemplateDesigne } from '../redux/admin/slices/libraryCategorySlice'
-import ActiveAndInActiveModal from '../components/Modals/ActiveAndInActiveModal'
-import Pagination from '../components/commanComponents/Pagination'
 import MyPicker from '../components/commanComponents/MyPicker'
+import Pagination from '../components/commanComponents/Pagination'
+import SearchBox from '../components/table/SearchBox'
+import { activeInActiveCategories, addNewTemplate, deleteDate, getAllTemplate, updateTemplateDesigne } from '../redux/admin/slices/libraryCategorySlice'
+import { formatDateUSA } from '../utils/healper/dateHelper'
 
 
 const LibraryManagement = () => {
@@ -123,12 +125,13 @@ const LibraryManagement = () => {
                     <p className="text-content">Manage your DreamDraper platform</p>
                     <div className="table-content">
                         <div className="content-header">
-                            <div className="search-align">
+                            {/* <div className="search-align">
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search Template name" className="search-content"
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
-                            </div>
+                            </div> */}
+                            <SearchBox search={search} setSearch={setSearch} />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
                                 <button type="button" className="template-upload" data-bs-toggle="modal" data-bs-target="#uploadTemplateModal">
@@ -174,7 +177,7 @@ const LibraryManagement = () => {
                                                     <td className="main-cat">{item.subCategory.sub_category_name || "N/A"}</td>
                                                     <td className="nested-cat">{item.nestedCategory.nested_category_name || "N/A"}</td>
                                                     <td className="nested-cat">{item.subNestedCategory.sub_nested_category_name || "N/A"}</td>
-                                                    <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                                                    <td>{formatDateUSA(item.createdAt)}</td>
                                                     <td>
                                                         <button
                                                             style={

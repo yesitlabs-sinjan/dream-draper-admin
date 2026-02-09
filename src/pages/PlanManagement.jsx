@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
-import AddEditPlanManagement from '../components/Modals/AddEditPlanManagement'
-import ViewFeatures from '../components/ViewFeatures'
-import ActiveAndInActiveModal from '../components/Modals/ActiveAndInActiveModal'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addNewPlans, getPlans, updatePlansDaitls } from '../redux/admin/slices/planSlices'
+import ActiveAndInActiveModal from '../components/Modals/ActiveAndInActiveModal'
+import AddEditPlanManagement from '../components/Modals/AddEditPlanManagement'
 import DeleteModal from '../components/Modals/DeleteModal'
-import Pagination from '../components/commanComponents/Pagination'
+import ViewFeatures from '../components/ViewFeatures'
 import MyPicker from '../components/commanComponents/MyPicker'
+import Pagination from '../components/commanComponents/Pagination'
+import SearchBox from '../components/table/SearchBox'
 import { activeInActiveCategories, deleteDate } from '../redux/admin/slices/libraryCategorySlice'
+import { addNewPlans, getPlans, updatePlansDaitls } from '../redux/admin/slices/planSlices'
 
 const PlanManagement = () => {
     const hasFetched = useRef(false);
@@ -105,10 +106,11 @@ const PlanManagement = () => {
                     <p className="text-content">Manage your DreamDraper platform</p>
                     <div className="table-content">
                         <div className="content-header">
-                            <div className="search-align">
+                            {/* <div className="search-align">
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search plans" className="search-content" onChange={(e) => setSearch(e.target.value)} />
-                            </div>
+                            </div> */}
+                            <SearchBox search={search} setSearch={setSearch} />
                             <div className="content-right">
                                 {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                                 <MyPicker handleDateFilter={handleRange} />

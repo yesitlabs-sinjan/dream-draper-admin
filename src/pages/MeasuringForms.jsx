@@ -1,15 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import AddEditForm from '../components/Modals/AddEditForm'
 import DeleteModal from '../components/Modals/DeleteModal'
 import MyPicker from '../components/commanComponents/MyPicker'
-import { addMeasuring, getAllMeasuring, updateMeasuring } from '../redux/admin/slices/measuringFormsSlices'
-import { useDispatch, useSelector } from 'react-redux'
+import Pagination from '../components/commanComponents/Pagination'
+import SearchBox from '../components/table/SearchBox'
 import { deleteDate } from '../redux/admin/slices/libraryCategorySlice'
-import Pagination from '../components/commanComponents/Pagination';
-
-const formatDate = (date) =>
-    date ? new Date(date).toLocaleDateString() : '---';
-
+import { addMeasuring, getAllMeasuring, updateMeasuring } from '../redux/admin/slices/measuringFormsSlices'
+import { formatDateUSA } from '../utils/healper/dateHelper'
 
 const MeasuringForms = () => {
     const hasFetched = useRef(false);
@@ -99,10 +97,11 @@ const MeasuringForms = () => {
 
                     <div className="table-content">
                         <div className="content-header">
-                            <div className="search-align">
+                            {/* <div className="search-align">
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search designe title" className="search-content" onChange={(e) => setSearch(e.target.value)} />
-                            </div>
+                            </div> */}
+                            <SearchBox search={search} setSearch={setSearch} />
                             <div className="content-right">
                                 {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                                 <MyPicker handleDateFilter={handleRange} />
@@ -113,7 +112,7 @@ const MeasuringForms = () => {
                                         gap: '6px'
                                     }}
                                     data-bs-toggle="modal" data-bs-target="#addmeasuringform" onClick={() => setSelectedItem(null)}>
-                                    <img src="./images/white-plus.svg" className="template" /> Add Form
+                                    <img src="./images/white-plus.svg" className="template" alt='' /> Add Form
                                 </button>
                             </div>
                         </div>
@@ -154,7 +153,7 @@ const MeasuringForms = () => {
                                                     <td className="tutorials-data">{item.title}</td>
                                                     <td className="main-cat">{item.price}</td>
                                                     <td className="main-cat">{item.description}</td>
-                                                    <td className="nested-cat">{formatDate(item.createdAt)}</td>
+                                                    <td className="nested-cat">{formatDateUSA(item.createdAt) || "-"}</td>
                                                     <td>
                                                         <img
                                                             src="./images/editsolid.svg"
@@ -163,6 +162,7 @@ const MeasuringForms = () => {
                                                             data-bs-target="#addmeasuringform"
                                                             style={{ display: 'inline-block' }}
                                                             onClick={() => setSelectedItem(item)}
+                                                            alt=""
                                                         />
                                                         <img
                                                             src="./images/del-solid.svg"
@@ -171,6 +171,7 @@ const MeasuringForms = () => {
                                                             data-bs-target="#deleteDesign"
                                                             style={{ display: 'inline-block' }}
                                                             onClick={() => setSelectedItem(item)}
+                                                            alt=""
                                                         />
                                                     </td>
                                                 </tr>

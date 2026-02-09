@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
-import AddEditSubCategory from '../../components/libraryCategory/AddEditSubCategory'
-import { useDispatch, useSelector } from 'react-redux'
-import { activeInActiveCategories, addSubCategory, deleteDate, getCategory, updateSubCategory } from '../../redux/admin/slices/libraryCategorySlice';
-import DeleteModal from '../../components/Modals/DeleteModal';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ActiveAndInActiveModal from '../../components/Modals/ActiveAndInActiveModal';
-import Pagination from '../../components/commanComponents/Pagination';
+import DeleteModal from '../../components/Modals/DeleteModal';
 import MyPicker from '../../components/commanComponents/MyPicker';
+import Pagination from '../../components/commanComponents/Pagination';
+import AddEditSubCategory from '../../components/libraryCategory/AddEditSubCategory';
+import SearchBox from '../../components/table/SearchBox';
+import { activeInActiveCategories, addSubCategory, deleteDate, getCategory, updateSubCategory } from '../../redux/admin/slices/libraryCategorySlice';
+import { formatDateUSA } from '../../utils/healper/dateHelper';
 
 const SubCategory = () => {
     const hasFetched = useRef(false);
@@ -111,7 +113,7 @@ const SubCategory = () => {
 
                     <div className="table-content">
                         <div className="content-header">
-                            <div className="search-align">
+                            {/* <div className="search-align">
                                 <img src="./images/search.svg" className="magnify" />
                                 <input
                                     type="text"
@@ -119,7 +121,8 @@ const SubCategory = () => {
                                     className="search-content"
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
-                            </div>
+                            </div> */}
+                            <SearchBox search={search} setSearch={setSearch} />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
                                 <button type="button" className="template-upload"
@@ -163,7 +166,7 @@ const SubCategory = () => {
                                                 <tr key={item.id || index}>
                                                     <td>{startIndex + index + 1}</td>
                                                     <td className="tempName">{item.sub_category_name || "Sub-Category Name"}</td>
-                                                    <td>{item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "—"}</td>
+                                                    <td>{item.createdAt ? formatDateUSA(item.createdAt) : "—"}</td>
                                                     <td>
                                                         <button
                                                             style={
@@ -176,7 +179,7 @@ const SubCategory = () => {
                                                             data-bs-target="#activateTemplateModal"
                                                             onClick={() => setSelectedSubCat(item)}
                                                         >
-                                                            {item.is_active == 1 ? "Active" : "InActive"}
+                                                            {item.is_active == 1 ? "Active" : "Inactive"}
                                                         </button>
                                                     </td>
                                                     <td>
