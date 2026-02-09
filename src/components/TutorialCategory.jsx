@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
-import AddEditCategory from './AddEditCategory'
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { activeInActiveCategories, deleteDate } from '../redux/admin/slices/libraryCategorySlice';
 import { addNewCategory, fetchAllCategory, updateCategory } from '../redux/admin/slices/TutorialAndMediaSlices';
+import AddEditCategory from './AddEditCategory';
 import MyPicker from './commanComponents/MyPicker';
 import Pagination from './commanComponents/Pagination';
 import ActiveAndInActiveModal from './Modals/ActiveAndInActiveModal';
-import { activeInActiveCategories, deleteDate } from '../redux/admin/slices/libraryCategorySlice';
 import DeleteModal from './Modals/DeleteModal';
+import SearchBox from './table/SearchBox';
 
 const TutorialCategory = ({ handleBack }) => {
     const dispatch = useDispatch()
@@ -98,14 +99,15 @@ const TutorialCategory = ({ handleBack }) => {
                             <h2 className="heading-content">Category Manager</h2>
                             <p className="text-content">Manage your DreamDraper platform</p>
                         </div>
-                        <button className="back-btn" onClick={() => handleBack()} ><img src="./images/btn-back.svg" className="arrow-back" /> Back</button>
+                        <button className="back-btn" onClick={() => handleBack()} ><img src="./images/btn-back.svg" className="arrow-back" alt='back icon' /> Back</button>
 
                     </div>
                     <div className="table-content">
                         <div className="content-header">
                             <div className="search-align">
-                                <img src="./images/search.svg" className="magnify" />
-                                <input type="text" placeholder="Search User Name" className="search-content" onChange={(e) => setSearch(e.target.value)} />
+                                <img src="./images/search.svg" className="magnify" alt='search icon' />
+                                {/* <input type="text" placeholder="Search User Name" className="search-content" onChange={(e) => setSearch(e.target.value)} /> */}
+                                <SearchBox search={search} setSearch={setSearch} placeholder="Search Category" />
                             </div>
                             <div className="content-right">
                                 {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
@@ -118,7 +120,7 @@ const TutorialCategory = ({ handleBack }) => {
                                     }}
                                     data-bs-toggle="modal"
                                     data-bs-target="#addCategoryModal">
-                                    <img src="./images/white-plus.svg" className="template" /> Add Category
+                                    <img src="./images/white-plus.svg" className="template" alt='plus icon' /> Add Category
                                 </button>
                             </div>
                         </div>

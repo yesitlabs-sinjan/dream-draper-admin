@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -93,7 +92,7 @@ const AddEditCategory = ({ initialData = null, onSubmit, onReset }) => {
                         <button
                             type="submit"
                             className="add-category-save"
-                            data-bs-dismiss="modal"
+                            // data-bs-dismiss="modal"
                             onClick={formik.handleSubmit}
                         >
                             {isEdit ? "Update" : "Submit"}

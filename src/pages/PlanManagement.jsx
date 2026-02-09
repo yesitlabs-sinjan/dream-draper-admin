@@ -4,9 +4,6 @@ import ActiveAndInActiveModal from '../components/Modals/ActiveAndInActiveModal'
 import AddEditPlanManagement from '../components/Modals/AddEditPlanManagement'
 import DeleteModal from '../components/Modals/DeleteModal'
 import ViewFeatures from '../components/ViewFeatures'
-import MyPicker from '../components/commanComponents/MyPicker'
-import Pagination from '../components/commanComponents/Pagination'
-import SearchBox from '../components/table/SearchBox'
 import { activeInActiveCategories, deleteDate } from '../redux/admin/slices/libraryCategorySlice'
 import { addNewPlans, getPlans, updatePlansDaitls } from '../redux/admin/slices/planSlices'
 
@@ -57,7 +54,7 @@ const PlanManagement = () => {
         setCurrentPage(1)
     }, [plans, search, dateRange]);
 
-    const totalItems = filteredData?.length;
+    // const totalItems = filteredData?.length;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentItems = filteredData.slice(startIndex, startIndex + itemsPerPage);
 
@@ -95,9 +92,7 @@ const PlanManagement = () => {
         }
     }
 
-    const handleRange = (startDate, endDate) => {
-        setDateRange({ startDate, endDate });
-    };
+ 
     return (
         <>
             <div className="content">
@@ -110,9 +105,8 @@ const PlanManagement = () => {
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search plans" className="search-content" onChange={(e) => setSearch(e.target.value)} />
                             </div> */}
-                            <SearchBox search={search} setSearch={setSearch} />
-                            <div className="content-right">
-                                {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
+                            {/* <SearchBox search={search} setSearch={setSearch} /> */}
+                            {/* <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
                                 <button type="button" className="template-upload"
                                     style={{
@@ -120,9 +114,9 @@ const PlanManagement = () => {
                                     }}
                                     data-bs-toggle="modal"
                                     data-bs-target="#addplan" onClick={handlePopup}>
-                                    <img src="./images/templateUpload.svg" className="template" /> Add New Plan
-                                </button>
-                            </div>
+                                    <img src="./images/templateUpload.svg" className="template" alt='add icon' /> Add New Plan
+                                </button> 
+                            </div> */}
                         </div>
                         <div className="table-container">
                             <div className="scroll-table">
@@ -217,7 +211,7 @@ const PlanManagement = () => {
                                                             alt="edit"
                                                             onClick={() => setSelectedData(plan)}
                                                         />
-                                                        <img
+                                                        {/* <img
                                                             src="./images/del-solid.svg"
                                                             className="icon-table"
                                                             data-bs-toggle="modal"
@@ -225,7 +219,7 @@ const PlanManagement = () => {
                                                             style={{ display: "inline-block" }}
                                                             alt="delete"
                                                             onClick={() => setSelectedData(plan)}
-                                                        />
+                                                        /> */}
                                                     </td>
                                                 </tr>
                                             ))
@@ -238,77 +232,16 @@ const PlanManagement = () => {
                                         )}
                                     </tbody>
 
-                                    {/* <tbody>
-                                        <tr>
-                                            <td>01</td>
-                                            <td className="tempName">Monthly Subscription</td>
-
-                                            <td>$0/month</td>
-                                            <td className="main-cat">3,420</td>
-                                            <td className="eye-td">
-                                                <a href="#" className="view-link" data-bs-toggle="modal" data-bs-target="#featuresPopupModal">
-                                                    View <img src="./images/solid-eye.svg" className="eye-img" />
-                                                </a>
-                                            </td>
-                                            <td><button className="status-btn-library" data-bs-toggle="modal"
-                                                data-bs-target="#activateTemplateModal"> Active</button></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal"
-                                                    data-bs-target="#addplan" style={{
-                                                        display: 'inline-block'
-                                                    }} />
-                                                <img src="./images/del-solid.svg" className="icon-table" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteDesign" style={{
-                                                        display: 'inline-block'
-                                                    }} />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>02</td>
-                                            <td className="tempName">Annual Subscription</td>
-
-                                            <td>$99/year</td>
-                                            <td className="main-cat">1,250</td>
-                                            <td className="eye-td">
-                                                <a href="#" className="view-link" data-bs-toggle="modal" data-bs-target="#featuresPopupModal">
-                                                    View <img src="./images/solid-eye.svg" className="eye-img" />
-                                                </a>
-                                            </td>
-                                            <td><button className="status-btn-library" data-bs-toggle="modal"
-                                                data-bs-target="#activateTemplateModal"> Active</button></td>
-                                            <td>
-                                                <img src="./images/editsolid.svg" className="icon-table" data-bs-toggle="modal"
-                                                    data-bs-target="#editplan" style={{
-                                                        display: 'inline-block'
-                                                    }} />
-                                                <img src="./images/del-solid.svg" className="icon-table" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteDesign" style={{
-                                                        display: 'inline-block'
-                                                    }} />
-                                            </td>
-                                        </tr>
-                                        
-                                    </tbody> */}
+                                 
                                 </table>
                             </div>
                             {/* <!-- Pagination --> */}
-                            <Pagination
+                            {/* <Pagination
                                 currentPage={currentPage}
                                 totalItems={totalItems}
                                 itemsPerPage={itemsPerPage}
                                 onPageChange={setCurrentPage}
-                            />
-                            {/* <div className="pagination">
-                                <button>&laquo;</button>
-                                <button>&lt;</button>
-                                <button className="active">1</button>
-                                <button>2</button>
-                                <button>3</button>
-                                <button>...</button>
-                                <button>10</button>
-                                <button>&gt;</button>
-                                <button>&raquo;</button>
-                            </div> */}
+                            /> */}
                         </div>
                     </div>
                 </div>

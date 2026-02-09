@@ -91,7 +91,7 @@ const ProjectManagement = () => {
                                     <img src="./images/search.svg" className="magnify" />
                                     <input type="text" placeholder="Search User Name" className="search-content" onChange={(e) => setSearchTerm(e.target.value)} />
                                 </div> */}
-                                <SearchBox search={searchTerm} setSearch={setSearchTerm} />
+                                <SearchBox search={searchTerm} setSearch={setSearchTerm} placeholder="Search Project" />
                                 <div className="content-right">
                                     {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                                     <MyPicker handleDateFilter={handleRange} />

@@ -85,7 +85,7 @@ const CategoryShowcases = ({ onBack }) => {
         }
         setFilteredData(filtered);
         setCurrentPage(1)
-    }, [category, search, , dateRange]);
+    }, [category, search, dateRange]);
 
 
 
@@ -108,7 +108,7 @@ const CategoryShowcases = ({ onBack }) => {
                             <h2 class="heading-content">Category Manager</h2>
                             <p class="text-content">Manage your DreamDraper platform</p>
                         </div>
-                        <button class="back-btn" onClick={onBack}><img src="./images/btn-back.svg" class="arrow-back" /> Back</button>
+                        <button class="back-btn" onClick={onBack}><img src="./images/btn-back.svg" class="arrow-back" alt='back arrow' /> Back</button>
                     </div>
 
                     <div class="table-content">
@@ -117,7 +117,7 @@ const CategoryShowcases = ({ onBack }) => {
                                 <img src="./images/search.svg" class="magnify" />
                                 <input type="text" placeholder="Search category name" class="search-content" onChange={(e) => setSearch(e.target.value)} />
                             </div> */}
-                            <SearchBox search={search} setSearch={setSearch} />
+                            <SearchBox search={search} setSearch={setSearch} placeholder="Search Showcase" />
                             <div class="content-right">
                                 {/* <img class="datepicker" src="./images/datepicker.svg" /> */}
                                 <MyPicker handleDateFilter={handleRange} />
@@ -130,7 +130,7 @@ const CategoryShowcases = ({ onBack }) => {
                                     onClick={() => setEditData(null)}
                                     // style="width: auto; justify-content: center; gap: 6px;"
                                     data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                                    <img src="./images/white-plus.svg" class="template" /> Add Category
+                                    <img src="./images/white-plus.svg" class="template" alt='add icon' /> Add Category
                                 </button>
                             </div>
                         </div>
@@ -173,6 +173,7 @@ const CategoryShowcases = ({ onBack }) => {
                                                             data-bs-target="#addCategoryModal"
                                                             style={{ cursor: 'pointer' }}
                                                             onClick={() => setEditData(item)}
+                                                            alt='edit icon'
                                                         />
 
                                                         <img
@@ -182,6 +183,7 @@ const CategoryShowcases = ({ onBack }) => {
                                                             data-bs-target="#deleteDesign"
                                                             style={{ cursor: 'pointer' }}
                                                             onClick={() => setSelectedId(item.id)}
+                                                            alt='delete icon'
                                                         />
                                                     </td>
                                                 </tr>

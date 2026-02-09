@@ -131,11 +131,11 @@ const LibraryManagement = () => {
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
                             </div> */}
-                            <SearchBox search={search} setSearch={setSearch} />
+                            <SearchBox search={search} setSearch={setSearch} placeholder="Search Template Name" />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
                                 <button type="button" className="template-upload" data-bs-toggle="modal" data-bs-target="#uploadTemplateModal">
-                                    <img src="./images/templateUpload.svg" className="template" /> Upload Template
+                                    <img src="./images/templateUpload.svg" className="template" alt="upload icon" /> Upload Template
                                 </button>
                             </div>
                         </div>
@@ -224,7 +224,7 @@ const LibraryManagement = () => {
                                         ) : (
                                             <tr>
                                                 <td colSpan="12" style={{ textAlign: "center", padding: "20px" }}>
-                                                    No templates found.
+                                                    No data found.
                                                 </td>
                                             </tr>
                                         )}

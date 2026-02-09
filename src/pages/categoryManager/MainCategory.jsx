@@ -115,7 +115,7 @@ const MainCategory = () => {
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search Main Category" className="search-content" onChange={(e) => setSearch(e.target.value)} />
                             </div> */}
-                            <SearchBox search={search} setSearch={setSearch} />
+                            <SearchBox search={search} setSearch={setSearch} placeholder="Search Main Category" />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
                                 <button type="button" className="template-upload"
@@ -126,7 +126,7 @@ const MainCategory = () => {
                                     }}
                                     data-bs-toggle="modal"
                                     data-bs-target="#addCategoryModal">
-                                    <img src="./images/white-plus.svg" className="template" /> Add Category
+                                    <img src="./images/white-plus.svg" className="template" alt='plus icon'/> Add Category
                                 </button>
                             </div>
                         </div>

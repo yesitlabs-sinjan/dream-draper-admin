@@ -1,9 +1,8 @@
-import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 const AddEditCategory = ({ initialData = null, onSubmit, onReset, isEdit }) => {
-    console.log("initialData", initialData, '  isEdit', isEdit)
+
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -17,7 +16,7 @@ const AddEditCategory = ({ initialData = null, onSubmit, onReset, isEdit }) => {
         }),
         onSubmit: (values, { resetForm }) => {
             onSubmit(values, isEdit);
-            onReset()
+            onReset();
             resetForm();
         }
     });
@@ -78,7 +77,7 @@ const AddEditCategory = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                             </div>
                             <div className="add-category-footer">
                                 <button type="button" className="add-category-cancel" data-bs-dismiss="modal" onClick={closePopup}>Cancel</button>
-                                <button type="submit" className="add-category-save" data-bs-dismiss="modal">{!isEdit ? 'Submit' : 'Save Changes'}</button>
+                                <button type="submit" className="add-category-save">{!isEdit ? 'Submit' : 'Save Changes'}</button>
                             </div>
                         </form>
                     </div>

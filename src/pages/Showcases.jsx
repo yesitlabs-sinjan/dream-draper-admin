@@ -80,7 +80,7 @@ const Showcases = () => {
         }
         setFilteredData(filtered);
         setCurrentPage(1)
-    }, [allShowcase, search, , dateRange]);
+    }, [allShowcase, search, dateRange]);
 
     const handleRange = (startDate, endDate) => {
         setDateRange({ startDate, endDate });
@@ -116,7 +116,7 @@ const Showcases = () => {
                                         <img src="./images/search.svg" className="magnify" />
                                         <input type="text" placeholder="Search User Name" className="search-content" onChange={(e) => setSearch(e.target.value)} />
                                     </div> */}
-                                    <SearchBox search={search} setSearch={setSearch} />
+                                    <SearchBox search={search} setSearch={setSearch} placeholder="Search Showcase" />
                                     <div className="content-right">
                                         {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                                         <MyPicker handleDateFilter={handleRange} />
@@ -134,7 +134,7 @@ const Showcases = () => {
                                             // style="width: auto; justify-content: center; gap: 6px;"
                                             onClick={handleOpenCloseCate}
                                         >
-                                                Category Manager
+                                                    <img src="./images/white-plus.svg" className="template" alt='plus icon' /> Category Manager
                                             </button></a>
                                         <button type="button" className="template-upload"
                                             style={{
@@ -144,7 +144,7 @@ const Showcases = () => {
                                             }}
                                             // style="width: auto; justify-content: center; gap: 6px;"
                                             data-bs-toggle="modal" data-bs-target="#uploadTemplateModal" onClick={() => setEditedData(null)}>
-                                            <img src="./images/white-plus.svg" className="template" /> Add Tutorial
+                                            <img src="./images/white-plus.svg" className="template" alt='plus icon' /> Add Showcase
                                         </button>
                                     </div>
                                 </div>
@@ -243,7 +243,7 @@ const Showcases = () => {
             <DeleteModal
                 onClose={handleClose}
                 onConfirm={handleDelete}
-                type={'templete'}
+                type={'showcase'}
             />
         </>
     )

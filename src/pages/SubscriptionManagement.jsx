@@ -115,7 +115,7 @@ const SubscriptionManagement = () => {
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search User Name" className="search-content" onChange={(e) => setSearch(e.target.value)} />
                             </div> */}
-                            <SearchBox search={search} setSearch={setSearch} />
+                            <SearchBox search={search} setSearch={setSearch} placeholder="Search User" />
                             <div className="content-right">
                                 <div className="manual-auto-toggle">
                                     <button className={`manual-auto-btn ${changeMode ? 'active' : ''}`} id="manual-option" onClick={() => handleSwitch('manual')}>Manual</button>
@@ -148,16 +148,18 @@ const SubscriptionManagement = () => {
                                 </div>
                                 {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                                 <MyPicker handleDateFilter={handleRange} />
-                                <button type="button" className="template-upload"
-                                    style={{
-                                        width: 'auto',
-                                        justifyContent: "center",
-                                        gap: '6px'
-                                    }}
-                                    // style="width: auto; justify-content: center; gap: 6px;"
-                                    data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                    <img src="./images/white-plus.svg" className="template" alt='edit icon' /> Add User
-                                </button>
+                                {filterMode !== 'auto' && (
+                                    <button type="button" className="template-upload"
+                                        style={{
+                                            width: 'auto',
+                                            justifyContent: "center",
+                                            gap: '6px'
+                                        }}
+                                        // style="width: auto; justify-content: center; gap: 6px;"
+                                        data-bs-toggle="modal" data-bs-target="#editUserModal">
+                                        <img src="./images/white-plus.svg" className="template" alt='edit icon' /> Add User
+                                    </button>
+                                )}                                
                             </div>
                         </div>
                         <div className="table-container manual-table">
@@ -167,14 +169,14 @@ const SubscriptionManagement = () => {
                                         <tr>
                                             <th>S.No.</th>
                                             <th className="table-expand">Name</th>
-                                            <th className="table-expand">Username</th>
+                                            {/* <th className="table-expand">Username</th> */}
                                             <th className="table-expand">Email ID</th>
                                             <th className="table-expand">Phone Number</th>
-                                            <th className="table-expand">Transaction ID</th>
+                                            {/* <th className="table-expand">Transaction ID</th> */}
                                             <th className="table-expand">Status</th>
                                             <th className="table-expand">Plan</th>
                                             <th className="table-expand">Date</th>
-                                            <th className="table-expand">View Details</th>
+                                            {/* <th className="table-expand">View Details</th> */}
                                             <th className="table-expand">Action</th>
                                         </tr>
                                     </thead>
@@ -185,11 +187,11 @@ const SubscriptionManagement = () => {
                                                     <td>{index + 1}</td>
 
                                                     <td>{item.User?.name || '---'}</td>
-                                                    <td>{item.User?.username || '---'}</td>
+                                                    {/* <td>{item.User?.username || '---'}</td> */}
                                                     <td>{item.User?.email || '---'}</td>
                                                     <td>{item.User?.phone || '---'}</td>
 
-                                                    <td>{item.transaction_id || '---'}</td>
+                                                    {/* <td>{item.transaction_id || '---'}</td> */}
 
                                                     <td>
                                                         <button className={statusClass(item?.manual_suscribe ? item?.manual_suscribe : item.payment_status)}>
@@ -201,11 +203,11 @@ const SubscriptionManagement = () => {
 
                                                     <td>{formatDateUSA(item.start_date)}</td>
 
-                                                    <td className="eye-td">
+                                                    {/* <td className="eye-td">
                                                         <a href="#" className="view-link">
                                                             View <img src="./images/solid-eye.svg" className="eye-img" alt='eye icon'/>
                                                         </a>
-                                                    </td>
+                                                    </td> */}
 
                                                     <td>
                                                         {/* <img
@@ -317,7 +319,7 @@ const SubscriptionManagement = () => {
                                         ) : (
                                             <tr>
                                                 <td colSpan="11" style={{ textAlign: 'center' }}>
-                                                    No subscribers found
+                                                    No data found
                                                 </td>
                                             </tr>
                                         )}

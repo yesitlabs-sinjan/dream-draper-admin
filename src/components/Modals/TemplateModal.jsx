@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import * as Yup from "yup";
 import { allCategory, allSubCategory, getAllNestedCategory, getSubNestedCate } from "../../redux/admin/slices/libraryCategorySlice";
 
 const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
@@ -107,8 +107,10 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
       designe_name: Yup.string().required("Design Name is required"),
       category_id: Yup.string().required("Main Category is required"),
       subCategory_id: Yup.string().required("Sub-Category is required"),
-      nestedCategory_id: Yup.string().required("Nested Category is required"),
-      subNestedCategory_id: Yup.string().required("Sub-Nested Category is required"),
+      // nestedCategory_id: Yup.string().required("Nested Category is required"),
+      // subNestedCategory_id: Yup.string().required("Sub-Nested Category is required"),
+      nestedCategory_id: Yup.string().nullable(),
+      subNestedCategory_id: Yup.string().nullable(),
       description: Yup.string().required("Description is required"),
       is_paid: Yup.boolean(),
       price: Yup.number().when("is_paid", {
@@ -400,7 +402,7 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                 aria-label="Close">
                 Cancel
               </button>
-              <button type="submit" className="uploadSubmit" data-bs-dismiss={!Object.values(formik.errors).some(err => err) ? "modal" : undefined}>
+              <button type="submit" className="uploadSubmit" >
                 {isEdit ? "Update" : "Submit"}
               </button>
             </div>

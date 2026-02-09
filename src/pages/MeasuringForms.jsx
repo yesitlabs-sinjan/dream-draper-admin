@@ -101,7 +101,7 @@ const MeasuringForms = () => {
                                 <img src="./images/search.svg" className="magnify" />
                                 <input type="text" placeholder="Search designe title" className="search-content" onChange={(e) => setSearch(e.target.value)} />
                             </div> */}
-                            <SearchBox search={search} setSearch={setSearch} />
+                            <SearchBox search={search} setSearch={setSearch} placeholder="Search Measuring Forms" />
                             <div className="content-right">
                                 {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                                 <MyPicker handleDateFilter={handleRange} />

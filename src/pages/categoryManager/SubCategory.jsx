@@ -113,16 +113,7 @@ const SubCategory = () => {
 
                     <div className="table-content">
                         <div className="content-header">
-                            {/* <div className="search-align">
-                                <img src="./images/search.svg" className="magnify" />
-                                <input
-                                    type="text"
-                                    placeholder="Search Sub category"
-                                    className="search-content"
-                                    onChange={(e) => setSearch(e.target.value)}
-                                />
-                            </div> */}
-                            <SearchBox search={search} setSearch={setSearch} />
+                            <SearchBox search={search} setSearch={setSearch} placeholder="Search Sub-Category" />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
                                 <button type="button" className="template-upload"
@@ -133,7 +124,7 @@ const SubCategory = () => {
                                     }}
                                     data-bs-toggle="modal"
                                     data-bs-target="#addCategoryModal">
-                                    <img src="./images/white-plus.svg" className="template" /> Add Category
+                                    <img src="./images/white-plus.svg" className="template" alt="add icon" /> Add Sub-Category
                                 </button>
                             </div>
                         </div>

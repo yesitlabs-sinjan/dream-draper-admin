@@ -119,7 +119,7 @@ const NestedCategory = () => {
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
                             </div> */}
-                            <SearchBox search={search} setSearch={setSearch} />
+                            <SearchBox search={search} setSearch={setSearch} placeholder="Search Nested Category" />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
 
@@ -131,7 +131,7 @@ const NestedCategory = () => {
                                     }}
                                     data-bs-toggle="modal"
                                     data-bs-target="#addNestedCategoryModal">
-                                    <img src="./images/white-plus.svg" className="template" /> Add Category
+                                    <img src="./images/white-plus.svg" className="template" alt="add icon" /> Add Nested Category
                                 </button>
                             </div>
                         </div>
@@ -203,7 +203,7 @@ const NestedCategory = () => {
                                         ) : (
                                             <tr>
                                                 <td colSpan="5" style={{ textAlign: "center", padding: "10px" }}>
-                                                    No Sub Nested Categories Found!
+                                                    No Nested Categories Found!
                                                 </td>
                                             </tr>
                                         )}

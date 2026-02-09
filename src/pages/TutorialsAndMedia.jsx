@@ -123,7 +123,7 @@ const TutorialsAndMedia = () => {
                                         <img src="./images/search.svg" className="magnify" />
                                         <input type="text" placeholder="Search tutorial" className="search-content" onChange={(e) => setSearch(e.target.value)} />
                                     </div> */}
-                                    <SearchBox search={search} setSearch={setSearch} />
+                                    <SearchBox search={search} setSearch={setSearch} placeholder="Search Tutorial" />
                                     <div className="content-right">
                                         {/* <img className="datepicker" src="./images/datepicker.svg" /> */}
                                         <MyPicker handleDateFilter={handleRange} />
@@ -139,7 +139,7 @@ const TutorialsAndMedia = () => {
                                                 gap: '6px'
                                             }}
                                         >
-                                                Category Manager
+                                                    <img src="./images/white-plus.svg" className="template" alt='add icon' /> Category Manager
                                             </button></a>
                                         <button type="button" className="template-upload"
                                             style={{
@@ -148,7 +148,7 @@ const TutorialsAndMedia = () => {
                                                 gap: '6px'
                                             }}
                                             data-bs-toggle="modal" data-bs-target="#uploadTutorialModal">
-                                            <img src="./images/white-plus.svg" className="template" /> Add Tutorial
+                                            <img src="./images/white-plus.svg" className="template" alt='add icon' /> Add Tutorial
                                         </button>
                                     </div>
                                 </div>
@@ -213,6 +213,7 @@ const TutorialsAndMedia = () => {
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#uploadTutorialModal"
                                                                     onClick={() => setSelectedTutorial(tutorial)}
+                                                                    alt='edit icon'
                                                                 />
                                                                 <img
                                                                     src="./images/del-solid.svg"
@@ -221,6 +222,7 @@ const TutorialsAndMedia = () => {
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#deleteDesign"
                                                                     onClick={() => setSelectedTutorial(tutorial)}
+                                                                    alt='delete icon'
                                                                 />
                                                             </td>
                                                         </tr>
@@ -244,6 +246,7 @@ const TutorialsAndMedia = () => {
             <DeleteModal
                 onClose={handleClose}
                 onConfirm={handleDelete}
+                type={"tutorial"}
             />
             <AddTutorialModal initialData={selectedTutorial} onSubmit={handleSubmitNew} onReset={handleClose} />
         </>

@@ -1,12 +1,12 @@
 import { RxCross1 } from "react-icons/rx";
 
-const SearchBox = ({ search, setSearch }) => {
+const SearchBox = ({ search, setSearch, placeholder = 'Search' }) => {
   return (
     <div className="search-align">
-      <img src="./images/search.svg" className="magnify" />
+      <img src="./images/search.svg" className="magnify" alt="search icon" />
       <input
         type="text"
-        placeholder="Search User Name"
+        placeholder={placeholder}
         className="search-content"
         value={search}
         onChange={(e) => setSearch(e.target.value)}

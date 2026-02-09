@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import * as Yup from 'yup';
 import { allCategory } from '../../redux/admin/slices/libraryCategorySlice';
 
 const AddEditSubCategory = ({ initialData = null, onSubmit, onReset,isEdit }) => {
@@ -146,7 +146,7 @@ const AddEditSubCategory = ({ initialData = null, onSubmit, onReset,isEdit }) =>
                                 <button
                                     type="submit"
                                     className="add-category-save"
-                                     data-bs-dismiss="modal"
+                                    //  data-bs-dismiss="modal"
                                     disabled={formik.isSubmitting}
                                 >
                                     {isEdit ? 'Update' : 'Submit'}

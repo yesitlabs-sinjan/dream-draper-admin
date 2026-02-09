@@ -1,77 +1,8 @@
-// import React from 'react'
-
-// const AddEditNestedCategory = () => {
-//     return (
-//         <div className="modal fade add-category-modal" id="addCategoryModal" tabIndex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-//             <div className="modal-dialog modal-dialog-centered">
-//                 <div className="modal-content add-category-content">
-
-
-//                     <div className="modal-header add-category-header">
-//                         <h5 className="modal-title add-category-title" id="addCategoryModalLabel">Add Category</h5>
-//                         <img src="./images/cross-dropdown.svg" className="cross-dropdown" data-bs-dismiss="modal" aria-label="Close"
-//                             style={{ cursor: 'pointer' }} />
-//                     </div>
-
-
-//                     <div className="modal-body add-category-body" style={{ paddingBottom: 0 }} >
-//                         <form id="addCategoryForm">
-//                             <div className="mb-3">
-//                                 <label htmlFor="addCategoryName" className="form-label category-name">Main Category</label>
-//                                 {/* <input type="text" className="category-input" id="addCategoryName" placeholder="Select Category" /> */}
-//                                 <select className="category-input mt-2" id="mainCategorySelect">
-//                                     <option value="">Select Main Category</option>
-//                                     <option value="1">Electronics</option>
-//                                     <option value="2">Fashion</option>
-//                                     <option value="3">Groceries</option>
-//                                 </select>
-//                             </div>
-//                         </form>
-//                     </div>
-
-//                     <div className="modal-body add-category-body" style={{ paddingBottom: 0, paddingTop: 0 }}>
-//                         <form id="addCategoryForm">
-//                             <div className="mb-3">
-//                                 <label htmlFor="addCategoryName" className="form-label category-name">Sub Category</label>
-//                                 {/* <input type="text" className="category-input" id="addCategoryName" placeholder="Select Category" /> */}
-//                                 <select className="category-input mt-2" id="mainCategorySelect">
-//                                     <option value="">Select Main Category</option>
-//                                     <option value="1">Electronics</option>
-//                                     <option value="2">Fashion</option>
-//                                     <option value="3">Groceries</option>
-//                                 </select>
-//                             </div>
-//                         </form>
-//                     </div>
-
-//                     <div className="modal-body add-category-body" style={{ paddingBottom: 0, paddingTop: 0 }}>
-//                         <form id="addCategoryForm">
-//                             <div className="mb-3">
-//                                 <label htmlFor="addCategoryName" className="form-label category-name">Nested Category Name</label>
-//                                 <input type="text" className="category-input" id="addCategoryName" placeholder="Enter Category Name" />
-//                             </div>
-//                         </form>
-//                     </div>
-
-
-//                     <div className="add-category-footer">
-//                         <button type="button" className="add-category-cancel" data-bs-dismiss="modal">Cancel</button>
-//                         <button type="button" className="add-category-save">Submit</button>
-//                     </div>
-
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default AddEditNestedCategory
-
-import React, { useState, useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { allCategory, allSubCategory } from '../../redux/admin/slices/libraryCategorySlice';
-import { useDispatch } from 'react-redux';
 
 const AddEditNestedCategory = ({ initialData = null, onSubmit, onReset, isEdit}) => {
     const hasFetched = useRef(false);
@@ -253,7 +184,7 @@ const AddEditNestedCategory = ({ initialData = null, onSubmit, onReset, isEdit})
                                 type="submit"
                                 className="add-category-save"
                                 disabled={formik.isSubmitting}
-                                 data-bs-dismiss="modal"
+                                //  data-bs-dismiss="modal"
                             >
                                 {isEdit ? 'Update' : 'Submit'}
                             </button>

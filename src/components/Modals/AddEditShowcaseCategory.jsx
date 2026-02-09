@@ -1,5 +1,4 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 
 const AddEditShowcaseCategory = ({ editedData, onSubmit }) => {
     console.log("editedData", editedData)
@@ -92,7 +91,7 @@ const AddEditShowcaseCategory = ({ editedData, onSubmit }) => {
                                         <button
                                             type="submit"
                                             className="add-category-save"
-                                            data-bs-dismiss="modal"
+                                            // data-bs-dismiss="modal"
                                         >
                                             {isEditMode ? 'Update' : 'Submit'}
                                         </button>

@@ -116,7 +116,7 @@ const SubNestedCategory = () => {
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
                             </div> */}
-                            <SearchBox search={search} setSearch={setSearch} />
+                            <SearchBox search={search} setSearch={setSearch} placeholder="Search Nested Sub-Category" />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
                                 <button type="button" className="template-upload"
@@ -127,7 +127,7 @@ const SubNestedCategory = () => {
                                     }}
                                     data-bs-toggle="modal"
                                     data-bs-target="#addSubNestedCategoryModal">
-                                    <img src="./images/white-plus.svg" className="template" /> Add Category
+                                    <img src="./images/white-plus.svg" className="template" alt="add icon" /> Add Nested Sub-Category
                                 </button>
                             </div>
                         </div>
@@ -198,7 +198,7 @@ const SubNestedCategory = () => {
                                         ) : (
                                             <tr>
                                                 <td colSpan="5" style={{ textAlign: "center", padding: "10px" }}>
-                                                    No Sub Categories Found!
+                                                    No Sub Nested Categories Found!
                                                 </td>
                                             </tr>
                                         )}

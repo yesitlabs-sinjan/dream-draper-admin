@@ -1,108 +1,5 @@
-// import React from 'react'
-
-// const AddEditForm = () => {
-//     return (
-//         <div className="modal fade" id="addmeasuringform" tabIndex="-1" aria-hidden="true">
-//             <div className="modal-dialog modal-dialog-centered modal-lg"
-//                 style={{
-//                     width: '462px'
-//                 }}
-//             // style="width: 462px;"
-//             >
-//                 <div className="modal-content upload-template-popup">
-//                     <div className="modal-header upload-header" style={{ justifyContent: 'space-between' }}>
-//                         <label className="modal-heading">Add Measuring Form</label>
-//                         <img src="./images/cross-dropdown.svg" className="cross-dropdown" data-bs-dismiss="modal" aria-label="Close" style={{
-//                             cursor: 'pointer'
-//                         }} />
-//                     </div>
-//                     <div className="">
-//                         <form className="upload-dropdowns">
-
-//                             <div>
-//                                 <p className="upload-content-heading">Title</p>
-//                                 <input type="text" placeholder="Enter Design Name" className="upload-content-input" />
-//                             </div>
-
-
-//                             <div className="upload-section">
-//                                 <p className="upload-heading">Upload File</p>
-//                                 <input type="file" id="uploadDesignInput" hidden />
-//                                 <label for="uploadDesignInput" className="upload-template-label">
-//                                     <img src="./images/browse.svg" alt="upload" /><br />
-//                                     <p className="upload-txt">Click to browse or drag and drop your file</p>
-//                                 </label>
-//                             </div>
-//                             <div>
-//                                 <p className="upload-content-heading">Description</p>
-//                                 <textarea placeholder="Enter design description..." className="upload-content-textarea"></textarea>
-//                             </div>
-
-//                             <div className="upload-payment"
-//                                 style={{
-//                                     border: 'none'
-//                                 }}
-//                             // style="border: none;"
-//                             >
-
-//                                 <p className="price-forms">Price ($)</p>
-//                                 <input type="number" placeholder="0" className="number-input" />
-
-//                                 <div
-//                                     style={{
-//                                         display: 'flex',
-//                                         gap: '10px',
-//                                         marginTop: '20px'
-//                                     }}
-//                                 // style="display: flex; gap: 10px; margin-top: 20px;"
-//                                 >
-//                                     <button className="upload-content-heading"
-//                                         style={{
-//                                             border: 'none',
-//                                             background: 'transparentt'
-//                                         }}
-//                                     // style="border: none; background: transparent;"
-//                                     >Inactive</button>
-//                                     <label className="switch">
-//                                         <input type="checkbox" checked />
-//                                         <span className="slider"></span>
-//                                     </label>
-
-//                                     <button className="upload-content-heading"
-//                                         style={{
-//                                             border: 'none',
-//                                             background: 'transparentt'
-//                                         }}
-//                                     // style="border: none; background: transparent;"
-//                                     >Active</button>
-//                                 </div>
-//                             </div>
-
-//                             <div
-//                                 style={{
-//                                     display: 'flex',
-//                                     width: '100%',
-//                                     justifyContent: 'end',
-//                                     gap: '10px'
-//                                 }}
-//                             // style="display: flex; width: 100%; justify-content: end;gap: 10px;"
-//                             >
-//                                 <button type="button" className="uploadCancel" data-bs-dismiss="modal">Cancel</button>
-//                                 <button type="button" className="uploadSubmit">Add Form</button>
-//                             </div>
-
-//                         </form>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default AddEditForm
-
-import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
 const AddEditForm = ({ initialValues = null, onSubmit }) => {
@@ -126,7 +23,7 @@ const AddEditForm = ({ initialValues = null, onSubmit }) => {
         validationSchema: Yup.object({
             title: Yup.string().required('Title is required'),
             description: Yup.string().required('Description is required'),
-            price: Yup.number().min(0, 'Price must be 0 or more').required('Price is required'),
+            price: Yup.number().min(1, 'Price must be 0 or more').required('Price is required'),
         }),
         onSubmit: async (values, { resetForm }) => {
             try {
@@ -291,7 +188,7 @@ const AddEditForm = ({ initialValues = null, onSubmit }) => {
                             <button type="button" className="uploadCancel" data-bs-dismiss="modal">
                                 Cancel
                             </button>
-                            <button type="submit" className="uploadSubmit" data-bs-dismiss={!Object.values(formik.errors).some(err => err) ? "modal" : undefined}>
+                            <button type="submit" className="uploadSubmit" >
                                 {initialValues ? 'Update Form' : 'Add Form'}
                             </button>
                         </div>
