@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import * as api from "../Api";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import * as api from "../Api";
 
 function logouterror() {
     toast.error("Token Expired")
@@ -99,7 +99,7 @@ const MeasuringFormsSlice = createSlice({
             .addCase(addMeasuring.fulfilled, (state, action) => {
                 // state.allMeasuring = action.payload.data
                 state.loading = false;
-                // toast.success(action?.payload?.message || "Showcases category updated")
+                toast.success(action?.payload?.message || "Measuring form added successfully")
             })
             .addCase(addMeasuring.rejected, (state, action) => {
                 state.loading = false;
@@ -117,7 +117,7 @@ const MeasuringFormsSlice = createSlice({
             .addCase(updateMeasuring.fulfilled, (state, action) => {
                 // state.allMeasuring = action.payload.data
                 state.loading = false;
-                // toast.success(action?.payload?.message || "Showcases category updated")
+                toast.success(action?.payload?.message || "Measuring form updated successfully")
             })
             .addCase(updateMeasuring.rejected, (state, action) => {
                 state.loading = false;
