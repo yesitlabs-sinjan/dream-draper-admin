@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { allCategory } from '../../redux/admin/slices/libraryCategorySlice';
 
-const AddEditSubCategory = ({ initialData = null, onSubmit, onReset,isEdit }) => {
+const AddEditSubCategory = ({ initialData = null, onSubmit, onReset, isEdit }) => {
     const hasFetched = useRef(false);
     // const isEdit = Boolean(initialData);
     const dispatch = useDispatch();
@@ -24,10 +24,18 @@ const AddEditSubCategory = ({ initialData = null, onSubmit, onReset,isEdit }) =>
         enableReinitialize: true,
         onSubmit: (values, { resetForm }) => {
             onSubmit(values, isEdit);
-            if (isEdit) {
-                onReset()
-            }
+            onReset();
             resetForm();
+            const modalElement = document.getElementById("addCategoryModal");
+            if (modalElement) {
+                let modal = window.bootstrap.Modal.getInstance(modalElement);
+
+                if (!modal) {
+                    modal = new window.bootstrap.Modal(modalElement);
+                }
+
+                modal.hide();
+            }
         },
     });
     const closeModal = () => {

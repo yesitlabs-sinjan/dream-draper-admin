@@ -27,11 +27,13 @@ const AddEditCategory = ({ initialData = null, onSubmit, onReset }) => {
         },
         enableReinitialize: true,
     });
+
     const handleClose = () => {
         if (isEdit) {
             onReset()
         }
     }
+
     return (
         <div
             className="modal fade add-category-modal"
