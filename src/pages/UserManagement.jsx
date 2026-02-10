@@ -6,11 +6,14 @@ import DeleteModal from '../components/Modals/DeleteModal';
 import MyPicker from '../components/commanComponents/MyPicker';
 import Pagination from '../components/commanComponents/Pagination';
 import SearchBox from '../components/table/SearchBox';
+import useTableSort from '../hooks/useTableSort';
 import { deleteUser, getAllUsers, statusUpdate, updateUser } from '../redux/admin/slices/adminSlices';
 import { formatDateUSA } from '../utils/healper/dateHelper';
 
 
 const UserManagement = () => {
+    // table ref to apply sorting functionality, excluding profile picture and action columns
+    const tableRef = useTableSort({ excludeColumns: [1, 8] });
     const hasFetched = useRef(false);
     const dispatch = useDispatch();
     const { userdata } = useSelector((state) => state.user)
@@ -116,7 +119,6 @@ const UserManagement = () => {
         setDateRange({ startDate, endDate });
     };
 
-    
     return (
         <>
             <div className="content">
@@ -153,7 +155,7 @@ const UserManagement = () => {
                         </div>
                         <div className="table-container">
                             <div className="scroll-table">
-                                <table className="custom-table">
+                                <table ref={tableRef} className="custom-table">
                                     <thead>
                                         <tr>
                                             <th>S.No.</th>
@@ -176,7 +178,7 @@ const UserManagement = () => {
                                                     <td>
                                                         {user.profileImage && (
                                                             <img src={user.profileImage || "./images/table-img.svg"} className="table-img" alt="User" />
-                                                        )}                                                        
+                                                        )}
                                                     </td>
                                                     <td>{user.name || "N/A"}</td>
                                                     <td>{user.username || "N/A"}</td>

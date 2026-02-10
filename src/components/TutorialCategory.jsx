@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useTableSort from '../hooks/useTableSort';
 import { activeInActiveCategories, deleteDate } from '../redux/admin/slices/libraryCategorySlice';
 import { addNewCategory, fetchAllCategory, updateCategory } from '../redux/admin/slices/TutorialAndMediaSlices';
 import AddEditCategory from './AddEditCategory';
@@ -10,6 +11,8 @@ import DeleteModal from './Modals/DeleteModal';
 import SearchBox from './table/SearchBox';
 
 const TutorialCategory = ({ handleBack }) => {
+    // table ref to apply sorting functionality
+    const tableRef = useTableSort({ excludeColumns: [2, 5] });
     const dispatch = useDispatch()
     const { allCategory } = useSelector((state) => state.TutorialAndMedia)
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -126,7 +129,7 @@ const TutorialCategory = ({ handleBack }) => {
                         </div>
                         <div className="table-container">
                             <div className="scroll-table">
-                                <table className="custom-table">
+                                <table ref={tableRef} className="custom-table">
                                     <thead>
                                         <tr>
                                             <th

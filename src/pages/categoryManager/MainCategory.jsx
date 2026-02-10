@@ -6,10 +6,13 @@ import MyPicker from '../../components/commanComponents/MyPicker'
 import Pagination from '../../components/commanComponents/Pagination'
 import AddEditCategory from '../../components/libraryCategory/AddEditCategory'
 import SearchBox from '../../components/table/SearchBox'
+import useTableSort from '../../hooks/useTableSort'
 import { activeInActiveCategories, addCategory, deleteDate, getCategory, UpdateCategory } from '../../redux/admin/slices/libraryCategorySlice'
 import { formatDateUSA } from '../../utils/healper/dateHelper'
 
 const MainCategory = () => {
+    // table ref to apply sorting functionality
+    const tableRef = useTableSort({ excludeColumns: [4] });
     const hasFetched = useRef(false);
     const dispatch = useDispatch();
     const [categoryData, setCategoryData] = useState([]);
@@ -48,7 +51,7 @@ const MainCategory = () => {
         }
 
     };
-    
+
     useEffect(() => {
         let filtered = Array.isArray(categoryData) ? [...categoryData] : [];
         if (search) {
@@ -126,13 +129,13 @@ const MainCategory = () => {
                                     }}
                                     data-bs-toggle="modal"
                                     data-bs-target="#addCategoryModal">
-                                    <img src="./images/white-plus.svg" className="template" alt='plus icon'/> Add Category
+                                    <img src="./images/white-plus.svg" className="template" alt='plus icon' /> Add Category
                                 </button>
                             </div>
                         </div>
                         <div className="table-container">
                             <div className="scroll-table">
-                                <table className="custom-table">
+                                <table ref={tableRef} className="custom-table">
                                     <thead>
                                         <tr>
                                             <th style={{ width: '40px' }}>S.No.</th>

@@ -4,11 +4,16 @@ import MyPicker from '../components/commanComponents/MyPicker'
 import Pagination from '../components/commanComponents/Pagination'
 import AddAndEditUser from '../components/Modals/AddAndEditUser'
 import SearchBox from '../components/table/SearchBox'
+import useTableSort from '../hooks/useTableSort'
 import { registerUser } from '../redux/admin/slices/adminSlices'
 import { getAllSubscribers } from '../redux/admin/slices/subscriberSlice'
 import { formatDateUSA } from '../utils/healper/dateHelper'
 
 const SubscriptionManagement = () => {
+    // table ref to apply sorting functionality for manual subscription
+    const manualTableRef = useTableSort({ excludeColumns: [7] });
+     // table ref to apply sorting functionality for automatic subscription
+    const autoTableRef = useTableSort({ excludeColumns: [8, 10, 11] });
     const dispatch = useDispatch();
     const hasFetched = useRef(false);
     const { allSubscribers } = useSelector((state) => state.subscriber);
@@ -164,7 +169,7 @@ const SubscriptionManagement = () => {
                         </div>
                         <div className="table-container manual-table">
                             <div className="scroll-table">
-                                <table className="custom-table">
+                                <table ref={manualTableRef} className="custom-table">
                                     <thead>
                                         <tr>
                                             <th>S.No.</th>
@@ -252,7 +257,7 @@ const SubscriptionManagement = () => {
                         // style="display: none;"
                         >
                             <div className="scroll-table">
-                                <table className="custom-table">
+                                <table ref={autoTableRef} className="custom-table">
                                     <thead>
                                         <tr>
                                             <th>S.No.</th>

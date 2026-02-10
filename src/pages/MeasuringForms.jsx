@@ -5,11 +5,14 @@ import DeleteModal from '../components/Modals/DeleteModal'
 import MyPicker from '../components/commanComponents/MyPicker'
 import Pagination from '../components/commanComponents/Pagination'
 import SearchBox from '../components/table/SearchBox'
+import useTableSort from '../hooks/useTableSort'
 import { deleteDate } from '../redux/admin/slices/libraryCategorySlice'
 import { addMeasuring, getAllMeasuring, updateMeasuring } from '../redux/admin/slices/measuringFormsSlices'
 import { formatDateUSA } from '../utils/healper/dateHelper'
 
 const MeasuringForms = () => {
+    // table ref to apply sorting functionality
+    const tableRef = useTableSort({ excludeColumns: [3, 5] });
     const hasFetched = useRef(false);
     const dispatch = useDispatch();
     const { allMeasuring } = useSelector((state) => state.MeasuringForms)
@@ -118,7 +121,7 @@ const MeasuringForms = () => {
                         </div>
                         <div className="table-container">
                             <div className="scroll-table">
-                                <table className="custom-table">
+                                <table ref={tableRef} className="custom-table">
                                     <thead>
                                         <tr>
                                             <th

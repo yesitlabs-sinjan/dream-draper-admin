@@ -4,10 +4,13 @@ import ActiveAndInActiveModal from '../components/Modals/ActiveAndInActiveModal'
 import AddEditPlanManagement from '../components/Modals/AddEditPlanManagement'
 import DeleteModal from '../components/Modals/DeleteModal'
 import ViewFeatures from '../components/ViewFeatures'
+import useTableSort from '../hooks/useTableSort'
 import { activeInActiveCategories, deleteDate } from '../redux/admin/slices/libraryCategorySlice'
 import { addNewPlans, getPlans, updatePlansDaitls } from '../redux/admin/slices/planSlices'
 
 const PlanManagement = () => {
+    // table ref to apply sorting functionality
+    const tableRef = useTableSort({ excludeColumns: [4, 6] });
     const hasFetched = useRef(false);
     const dispatch = useDispatch();
     const { allPlans, loading } = useSelector((state) => state.plans);
@@ -92,7 +95,7 @@ const PlanManagement = () => {
         }
     }
 
- 
+
     return (
         <>
             <div className="content">
@@ -120,7 +123,7 @@ const PlanManagement = () => {
                         </div>
                         <div className="table-container">
                             <div className="scroll-table">
-                                <table className="custom-table">
+                                <table ref={tableRef} className="custom-table">
                                     <thead>
                                         <tr>
                                             <th>S.No.</th>
@@ -232,7 +235,7 @@ const PlanManagement = () => {
                                         )}
                                     </tbody>
 
-                                 
+
                                 </table>
                             </div>
                             {/* <!-- Pagination --> */}

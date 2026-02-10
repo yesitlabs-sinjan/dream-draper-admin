@@ -4,6 +4,7 @@ import ProjectDaitles from '../components/ProjectDaitles';
 import MyPicker from '../components/commanComponents/MyPicker';
 import Pagination from '../components/commanComponents/Pagination';
 import SearchBox from '../components/table/SearchBox';
+import useTableSort from '../hooks/useTableSort';
 import { fetchAllUserByProject } from '../redux/admin/slices/projectManagemetSlice';
 import { formatDateUSA } from '../utils/healper/dateHelper';
 
@@ -20,6 +21,8 @@ const getTimeAgo = (timestamp) => {
     return `${days} day${days > 1 ? "s" : ""} ago`;
 };
 const ProjectManagement = () => {
+    // table ref to apply sorting functionality
+    const tableRef = useTableSort({ excludeColumns: [6] });
     const hasFetched = useRef(false);
     const dispatch = useDispatch();
     const { allUserByProject } = useSelector((state) => state.project)
@@ -99,7 +102,7 @@ const ProjectManagement = () => {
                             </div>
                             <div className="table-container">
                                 <div className="scroll-table">
-                                    <table className="custom-table">
+                                    <table ref={tableRef} className="custom-table">
                                         <thead>
                                             <tr>
                                                 <th>S.No.</th>

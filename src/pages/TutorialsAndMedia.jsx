@@ -6,11 +6,14 @@ import AddTutorialModal from '../components/Modals/AddTutorialModal';
 import DeleteModal from '../components/Modals/DeleteModal';
 import SearchBox from '../components/table/SearchBox';
 import TutorialCategory from '../components/TutorialCategory';
+import useTableSort from '../hooks/useTableSort';
 import { deleteDate } from '../redux/admin/slices/libraryCategorySlice';
 import { addNewTutorails, fetchAllCategory, fetchAllTutorails, updateTutorails } from '../redux/admin/slices/TutorialAndMediaSlices';
 import { formatDateUSA } from '../utils/healper/dateHelper';
 
 const TutorialsAndMedia = () => {
+    // table ref to apply sorting functionality
+    const tableRef = useTableSort({ excludeColumns: [6] });
     const hasFetched = useRef(false);
     const dispatch = useDispatch();
     const { allTutorails } = useSelector((state) => state.TutorialAndMedia)
@@ -154,7 +157,7 @@ const TutorialsAndMedia = () => {
                                 </div>
                                 <div className="table-container">
                                     <div className="scroll-table">
-                                        <table className="custom-table">
+                                        <table ref={tableRef} className="custom-table">
                                             <thead>
                                                 <tr>
                                                     <th>S.No.</th>

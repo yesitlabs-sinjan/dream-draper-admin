@@ -6,10 +6,13 @@ import MyPicker from '../../components/commanComponents/MyPicker'
 import Pagination from '../../components/commanComponents/Pagination'
 import AddEditSubNestedCategory from '../../components/libraryCategory/AddEditSubNestedCategory'
 import SearchBox from '../../components/table/SearchBox'
+import useTableSort from '../../hooks/useTableSort'
 import { activeInActiveCategories, addSubNestedCategory, deleteDate, getCategory, updateSubNestedCategory } from '../../redux/admin/slices/libraryCategorySlice'
 import { formatDateUSA } from '../../utils/healper/dateHelper'
 
 const SubNestedCategory = () => {
+    // table ref to apply sorting functionality
+    const tableRef = useTableSort({ excludeColumns: [4] });
     const hasFetched = useRef(false);
     const dispatch = useDispatch();
     const { mainCategoryData } = useSelector((state) => state.libCategory)
@@ -133,7 +136,7 @@ const SubNestedCategory = () => {
                         </div>
                         <div className="table-container">
                             <div className="scroll-table">
-                                <table className="custom-table">
+                                <table ref={tableRef} className="custom-table">
                                     <thead>
                                         <tr>
                                             <th

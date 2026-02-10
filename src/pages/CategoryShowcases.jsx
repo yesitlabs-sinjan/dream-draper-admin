@@ -5,10 +5,13 @@ import DeleteModal from '../components/Modals/DeleteModal'
 import MyPicker from '../components/commanComponents/MyPicker'
 import Pagination from '../components/commanComponents/Pagination'
 import SearchBox from '../components/table/SearchBox'
+import useTableSort from '../hooks/useTableSort'
 import { deleteDate, getCategory } from '../redux/admin/slices/libraryCategorySlice'
 import { addShowcasesCategory, updateShowcasesCategory } from '../redux/admin/slices/showcases'
 
 const CategoryShowcases = ({ onBack }) => {
+    // table ref to apply sorting functionality
+    const tableRef = useTableSort({ excludeColumns: [3] });
     const dispatch = useDispatch()
     const hasFetched = useRef(false);
     const { mainCategoryData } = useSelector((state) => state.libCategory);
@@ -136,7 +139,7 @@ const CategoryShowcases = ({ onBack }) => {
                         </div>
                         <div class="table-container">
                             <div class="scroll-table">
-                                <table class="custom-table">
+                                <table ref={tableRef} class="custom-table">
                                     <thead>
                                         <tr>
                                             <th
