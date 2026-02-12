@@ -9,7 +9,10 @@ const AddEditShowcases = ({ initialData = null, onSubmit }) => {
     const hasFetched = useRef(false);
     const isEdit = Boolean(initialData);
     const MAX_SIZE = 50 * 1024 * 1024; // 50MB size limit
-    const [uploadedFile, setUploadedFile] = useState(initialData?.file || null);
+    // const [uploadedFile, setUploadedFile] = useState(initialData?.file || null);
+    const [uploadedFile, setUploadedFile] = useState(null);
+    const [existingFile, setExistingFile] = useState(null);
+
     const [tutorialCate, setTutorialCate] = useState([])
     const { mainCategoryData } = useSelector((state) => state.libCategory);
 
@@ -24,6 +27,22 @@ const AddEditShowcases = ({ initialData = null, onSubmit }) => {
             setTutorialCate(mainCategoryData);
         }
     }, [mainCategoryData]);
+
+    useEffect(() => {
+        if (initialData?.file) {
+            const fileName = initialData.file.split('/').pop();
+
+            setExistingFile({
+                name: fileName,
+                url: initialData.file,
+            });
+        } else {
+            setExistingFile(null);
+        }
+
+        setUploadedFile(null);
+    }, [initialData]);
+
 
     const formik = useFormik({
         initialValues: {
@@ -63,7 +82,13 @@ const AddEditShowcases = ({ initialData = null, onSubmit }) => {
             formData.append('title', values.title);
             formData.append('category_id', values.category_id || '');
             formData.append('description', values.description || '');
-            formData.append('file', values.file || '');
+            // formData.append('file', values.file || '');
+            if (uploadedFile) {
+                formData.append('file', uploadedFile);
+            } else if (existingFile?.url) {
+                formData.append('existingFileUrl', existingFile.url);
+            }
+
             onSubmit(formData, isEdit);
             resetForm();
             setUploadedFile(null);
@@ -188,7 +213,7 @@ const AddEditShowcases = ({ initialData = null, onSubmit }) => {
                         </div>
 
                         {/* Uploaded File Preview */}
-                        {uploadedFile && (
+                        {/* {uploadedFile && (
                             <div className="uploaded-content">
                                 <div className="upload-text-another">
                                     <img src="./images/file.svg" className="fil-uploaded" alt='file icon' />
@@ -215,7 +240,64 @@ const AddEditShowcases = ({ initialData = null, onSubmit }) => {
                                     />
                                 </div>
                             </div>
-                        )}
+                        )} */}
+                        {uploadedFile ? (
+                            <div className="uploaded-content">
+                                <div className="upload-text-another">
+                                    <img src="./images/file.svg" className="fil-uploaded" alt='file icon' />
+                                    <p className="uploaded-txt">{uploadedFile.name}</p>
+                                </div>
+                                <div className="upload-text-another">
+                                    <button type="button" className="image-size" style={{ cursor: "default", width: '75px' }}>
+                                        {(() => {
+                                            const sizeInKB = uploadedFile.size / 1024;
+                                            if (sizeInKB < 1024) {
+                                                return `${sizeInKB.toFixed(0)} KB`;
+                                            } else {
+                                                const sizeInMB = sizeInKB / 1024;
+                                                return `${sizeInMB.toFixed(2)} MB`;
+                                            }
+                                        })()}
+                                    </button>
+                                    <img
+                                        src="./images/blue-cross.svg"
+                                        className="blue-cross"
+                                        onClick={handleRemoveFile}
+                                        style={{ cursor: 'pointer' }}
+                                        alt='cross'
+                                    />
+                                </div>
+                            </div>
+                        ) : existingFile ? (
+                            <div className="uploaded-content">
+                                <div className="upload-text-another">
+                                    <img src="./images/file.svg" className="fil-uploaded" alt='file icon' />
+                                    <p className="uploaded-txt">Current file: {existingFile.name}</p>
+                                </div>
+                                <div className="upload-text-another">
+                                    <a
+                                        href={existingFile.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="image-size"
+                                        style={{ width: '75px', textAlign: 'center' }}
+                                    >
+                                        View
+                                    </a>
+                                    <img
+                                        src="./images/blue-cross.svg"
+                                        className="blue-cross"
+                                        onClick={() => {
+                                            setExistingFile(null);
+                                            formik.setFieldValue('file', null);
+                                        }}
+                                        style={{ cursor: 'pointer' }}
+                                        alt='cross'
+                                    />
+                                </div>
+                            </div>
+                        ) : null}
+
 
                         {/* Description */}
                         <div>

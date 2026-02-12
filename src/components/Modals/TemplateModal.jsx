@@ -4,12 +4,13 @@ import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { allCategory, allSubCategory, getAllNestedCategory, getSubNestedCate } from "../../redux/admin/slices/libraryCategorySlice";
 
-const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
+const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit, isView }) => {
   const dispatch = useDispatch()
   const hasFetched = useRef(false);
   const modalRef = useRef();
   const [uploadedFile, setUploadedFile] = useState(initialData?.designe || null);
   const [mainCategories, setMainCategories] = useState([]);
+  const [existingFileUrl, setExistingFileUrl] = useState(null);
   const [subCategories, setSubCategories] = useState([]);
   const [nestedCategories, setNestedCategories] = useState([]);
   const [subNestedCategories, setSubNestedCategories] = useState([]);
@@ -35,7 +36,16 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
       }
     }
     fetchAllCateData()
-  }, [initialData])
+  }, [initialData]);
+
+  useEffect(() => {
+    if (isEdit && initialData?.uploaded_designe) {
+      setExistingFileUrl(initialData.uploaded_designe);
+    } else {
+      setExistingFileUrl(null);
+    }
+  }, [initialData, isEdit]);
+
 
   const fetchMainCategories = async () => {
     try {
@@ -140,11 +150,19 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
     },
   });
 
+  // const handleFileChange = (e) => {
+  //   const file = e.currentTarget.files[0];
+  //   formik.setFieldValue("designe", file);
+  //   setUploadedFile(file);
+  // };
+
   const handleFileChange = (e) => {
     const file = e.currentTarget.files[0];
     formik.setFieldValue("designe", file);
     setUploadedFile(file);
+    setExistingFileUrl(null); // remove old preview when new file selected
   };
+
 
   const removeFile = () => {
     formik.setFieldValue("designe", null);
@@ -182,8 +200,8 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
       <div className="modal-dialog modal-dialog-centered modal-lg" style={{ width: "462px" }}>
         <div className="modal-content upload-template-popup">
           <div className="modal-header upload-header">
-            <label className="modal-heading">{isEdit ? "Edit Design" : "Upload Design"}</label>
-            
+            <label className="modal-heading">{isView ? "View Design" : isEdit ? "Edit Design" : "Upload Design"}</label>
+
             <img
               src="/images/cross-dropdown.svg"
               data-bs-dismiss="modal"
@@ -195,18 +213,63 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
           </div>
 
           <form className="upload-dropdowns" onSubmit={formik.handleSubmit}>
-            <div className="upload-section">
-              <p className="upload-heading">Upload Design</p>
-              <input type="file" id="uploadDesignInput" hidden onChange={handleFileChange} />
-              <label htmlFor="uploadDesignInput" className="upload-template-label">
-                <img src="/images/browse.svg" alt="upload" />
-                <br />
-                <p className="upload-txt">Click to browse or drag and drop your file</p>
-              </label>
-              {formik.touched.designe && formik.errors.designe && (
-                <div className="invalid-feedback d-block">{formik.errors.designe}</div>
+            {isView
+              ? (
+                <div className="upload-section">
+                  <p className="upload-heading">Uploaded Design</p>
+                  {/* <div className="upload-template-label">
+                    <img src={initialData?.uploaded_designe} alt="Uploaded design" className="upload-template-label" />
+                  </div> */}
+                  <img src={initialData?.uploaded_designe} alt="Uploaded design" className="upload-template-label" />
+                </div>
+              )
+              : (
+                // <div className="upload-section">
+                //   <p className="upload-heading">Upload Design</p>
+                //   <input type="file" id="uploadDesignInput" hidden onChange={handleFileChange} disabled={isView} />
+                //   <label htmlFor="uploadDesignInput" className="upload-template-label">
+                //     <img src="/images/browse.svg" alt="upload" />
+                //     <br />
+                //     <p className="upload-txt">Click to browse or drag and drop your file</p>
+                //   </label>
+                //   {formik.touched.designe && formik.errors.designe && (
+                //     <div className="invalid-feedback d-block">{formik.errors.designe}</div>
+                //   )}
+                // </div>
+                <div className="upload-section">
+                  <p className="upload-heading">Upload File</p>
+
+                  <input type="file" id="uploadDesignInput" hidden onChange={handleFileChange} disabled={isView} />
+
+                  <label htmlFor="uploadDesignInput" className="upload-template-label">
+                    <img src="./images/browse.svg" alt="upload" />
+                    <br />
+
+                    <p className="upload-txt">
+                      {uploadedFile
+                        ? uploadedFile.name
+                        : existingFileUrl
+                          ? `Current file: ${existingFileUrl.split("/").pop()}`
+                          : 'Click to browse or drag and drop your file'}
+                    </p>
+
+                  </label>
+
+                  {/* View existing file (edit mode only, no replacement yet) */}
+                  {existingFileUrl && !uploadedFile && (
+                    <p style={{ fontSize: '12px', marginTop: '6px' }}>
+                      <a
+                        href={existingFileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View current file
+                      </a>
+                    </p>
+                  )}
+                </div>
               )}
-            </div>
+
 
             {uploadedFile && (
               <div className="uploaded-content">
@@ -248,6 +311,7 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                 value={formik.values.designe_name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                disabled={isView}
               />
               {formik.touched.designe_name && formik.errors.designe_name && (
                 <div className="invalid-feedback">{formik.errors.designe_name}</div>
@@ -269,6 +333,7 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                 }}
                 onBlur={formik.handleBlur}
                 className={`upload-content-input ${formik.touched.category_id && formik.errors.category_id ? "is-invalid" : ""}`}
+                disabled={isView}
               >
                 <option value="" disabled>Select Main Category</option>
                 {mainCategories?.map((cat) => (
@@ -293,7 +358,7 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                   formik.setFieldValue("subNestedCategory_id", "");
                 }}
                 onBlur={formik.handleBlur}
-                disabled={!formik.values.category_id}
+                disabled={!formik.values.category_id || isView}
                 className={`upload-content-input ${formik.touched.subCategory_id && formik.errors.subCategory_id ? "is-invalid" : ""}`}
               >
                 <option value="" disabled>Select Sub Category</option>
@@ -317,7 +382,7 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                   formik.setFieldValue("subNestedCategory_id", "");
                 }}
                 onBlur={formik.handleBlur}
-                disabled={!formik.values.subCategory_id}
+                disabled={!formik.values.subCategory_id || isView}
                 className={`upload-content-input ${formik.touched.nestedCategory_id && formik.errors.nestedCategory_id ? "is-invalid" : ""}`}
               >
                 <option value="" disabled>Select Nested Category</option>
@@ -337,7 +402,7 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                 value={formik.values.subNestedCategory_id}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                disabled={!formik.values.nestedCategory_id}
+                disabled={!formik.values.nestedCategory_id || isView}
                 className={`upload-content-input ${formik.touched.subNestedCategory_id && formik.errors.subNestedCategory_id ? "is-invalid" : ""}`}
               >
                 <option value="" disabled>Select Sub-Nested Category</option>
@@ -359,6 +424,7 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                 value={formik.values.description}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                disabled={isView}
               />
               {formik.touched.description && formik.errors.description && (
                 <div className="invalid-feedback">{formik.errors.description}</div>
@@ -375,6 +441,8 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                     name="is_paid"
                     checked={formik.values.is_paid}
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    disabled={isView}
                   />
                 </div>
                 <span className="upload-content-heading">Paid</span>
@@ -390,6 +458,7 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                     value={formik.values.price}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    disabled={isView}
                   />
                   {formik.touched.price && formik.errors.price && (
                     <div className="invalid-feedback">{formik.errors.price}</div>
@@ -402,14 +471,16 @@ const TemplateModal = ({ initialData = null, onSubmit, onReset, isEdit }) => {
                 aria-label="Close">
                 Cancel
               </button>
-              <button type="submit" className="uploadSubmit" >
-                {isEdit ? "Update" : "Submit"}
-              </button>
+              {!isView && (
+                <button type="submit" className="uploadSubmit" >
+                  {isEdit ? "Update" : "Submit"}
+                </button>
+              )}
             </div>
           </form>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 

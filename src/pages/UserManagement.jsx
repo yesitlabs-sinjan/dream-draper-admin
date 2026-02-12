@@ -48,6 +48,7 @@ const UserManagement = () => {
             const term = search.toLowerCase();
             filtered = filtered.filter(item =>
                 item?.name?.toLowerCase().includes(term)
+                || item?.email?.toLowerCase().includes(term)
             );
         }
         if (searchTearm == 'Active') {

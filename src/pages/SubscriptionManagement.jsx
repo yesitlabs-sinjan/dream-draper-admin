@@ -3,16 +3,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import MyPicker from '../components/commanComponents/MyPicker'
 import Pagination from '../components/commanComponents/Pagination'
 import AddAndEditUser from '../components/Modals/AddAndEditUser'
+import DeleteModal from '../components/Modals/DeleteModal'
 import SearchBox from '../components/table/SearchBox'
 import useTableSort from '../hooks/useTableSort'
 import { registerUser } from '../redux/admin/slices/adminSlices'
-import { getAllSubscribers } from '../redux/admin/slices/subscriberSlice'
+import { getAllSubscribers, removeSubscriber } from '../redux/admin/slices/subscriberSlice'
 import { formatDateUSA } from '../utils/healper/dateHelper'
 
 const SubscriptionManagement = () => {
     // table ref to apply sorting functionality for manual subscription
     const manualTableRef = useTableSort({ excludeColumns: [7] });
-     // table ref to apply sorting functionality for automatic subscription
+    // table ref to apply sorting functionality for automatic subscription
     const autoTableRef = useTableSort({ excludeColumns: [8, 10, 11] });
     const dispatch = useDispatch();
     const hasFetched = useRef(false);
@@ -24,6 +25,7 @@ const SubscriptionManagement = () => {
     const [filteredData, setFilteredData] = useState(null)
     const [search, setSearch] = useState('')
     const [dateRange, setDateRange] = useState({ startDate: null, endDate: null });
+    const [selectedId, setSelectedId] = useState(null);
     const itemsPerPage = 10;
     const handleSubmit = async (values) => {
         const res = await dispatch(registerUser(values))
@@ -48,6 +50,8 @@ const SubscriptionManagement = () => {
             const term = search.toLowerCase();
             filtered = filtered.filter(item =>
                 item?.User?.name?.toLowerCase().includes(term)
+                || item?.User?.email?.toLowerCase().includes(term)
+                || item?.User?.phone?.toLowerCase().includes(term)
             );
         }
         if (dateRange.startDate && dateRange.endDate) {
@@ -77,8 +81,9 @@ const SubscriptionManagement = () => {
 
 
     const statusClass = (status) => {
+
         if (status === 'active' || status === 'paid') return 'paid';
-        if (status === 'failed' || status !== 'paid' || status === null) return 'unpaid';
+        if (status === 'failed' || status !== 'paid' || status == null) return 'unpaid';
         return 'trial';
     };
 
@@ -104,8 +109,28 @@ const SubscriptionManagement = () => {
 
     useEffect(() => {
         if (currentItems)
-            console.log("sub currentItems: ",currentItems)
+            console.log("sub currentItems: ", currentItems)
     }, [currentItems]);
+
+    const handleResetForm = () => { }
+
+    // const handleDelete = (id) => {
+    //     console.log("Id for delete", id)
+    //     dispatch(removeSubscriber(id));
+    //     dispatch(getAllSubscribers());
+    // };
+
+    const handleDelete = () => {
+        if (!selectedId) return;
+
+        dispatch(removeSubscriber(selectedId));
+        dispatch(getAllSubscribers());
+    };
+
+
+    const openDeleteModal = (id) => {
+        setSelectedId(id);
+    };
 
     return (
         <>
@@ -164,7 +189,7 @@ const SubscriptionManagement = () => {
                                         data-bs-toggle="modal" data-bs-target="#editUserModal">
                                         <img src="./images/white-plus.svg" className="template" alt='edit icon' /> Add User
                                     </button>
-                                )}                                
+                                )}
                             </div>
                         </div>
                         <div className="table-container manual-table">
@@ -200,11 +225,11 @@ const SubscriptionManagement = () => {
 
                                                     <td>
                                                         <button className={statusClass(item?.manual_suscribe ? item?.manual_suscribe : item.payment_status)}>
-                                                            {item?.manual_suscribe ? item?.manual_suscribe : item.Transactions[0]?.status || '---'}
+                                                            {item?.manual_suscribe ? item?.manual_suscribe.trim().toUpperCase() : item.Transactions[0]?.status.trim().toUpperCase() || '---'}
                                                         </button>
                                                     </td>
 
-                                                    <td>{item.Plan?.plan_name || '---'}</td>
+                                                    <td>{item.Plan?.plan_name?.replace('Subscription', '').trim() || '---'}</td>
 
                                                     <td>{formatDateUSA(item.start_date)}</td>
 
@@ -221,18 +246,26 @@ const SubscriptionManagement = () => {
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#editUserModal"
                                                         /> */}
-                                                        <img
-                                                            src="./images/del-solid.svg"
-                                                            className="icon-table"
-                                                            alt='delete icon'
-                                                        />
+                                                        <button
+                                                            type='button'
+                                                            className='bg-transparent border-0'
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteDesign"
+                                                            onClick={() => openDeleteModal(item.id)}
+                                                        >
+                                                            <img
+                                                                src="./images/del-solid.svg"
+                                                                className="icon-table"
+                                                                alt='delete icon'
+                                                            />
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             ))
                                         ) : (
                                             <tr>
                                                 <td colSpan="11" style={{ textAlign: 'center' }}>
-                                                    No subscribers found
+                                                    No data found
                                                 </td>
                                             </tr>
                                         )}
@@ -290,12 +323,15 @@ const SubscriptionManagement = () => {
                                                     <td>{item.transaction_id || '---'}</td>
 
                                                     <td>
-                                                        <button className={statusClass(item.payment_status)}>
-                                                            {item.payment_status || '---'}
+                                                        {/* <button className={statusClass(item.payment_status, true)}>
+                                                            {item.payment_status?.toUpperCase().trim() || '---'}
+                                                        </button> */}
+                                                        <button className={statusClass(item?.manual_suscribe != null ? item?.manual_suscribe : item.payment_status)}>
+                                                            {item?.manual_suscribe != null ? item?.manual_suscribe.trim().toUpperCase() : item.Transactions[0]?.status.trim().toUpperCase() || '---'}
                                                         </button>
                                                     </td>
 
-                                                    <td>{item.Plan?.plan_name || '---'}</td>
+                                                    <td>{item.Plan?.plan_name?.replace('Subscription', '').trim() || '---'}</td>
 
                                                     <td>{formatDateUSA(item.start_date)}</td>
 
@@ -350,6 +386,8 @@ const SubscriptionManagement = () => {
                 </div>
             </div>
             <AddAndEditUser onSubmit={handleSubmit} />
+            <DeleteModal onClose={handleResetForm}
+                onConfirm={handleDelete} type={'subscription'} />
         </>
     )
 }

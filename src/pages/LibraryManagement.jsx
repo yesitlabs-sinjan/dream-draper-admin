@@ -18,6 +18,7 @@ const LibraryManagement = () => {
     const dispatch = useDispatch()
     const [selectedTemplate, setSelectedTemplate] = useState(null);
     const [isEditData, setIsEditData] = useState(false)
+    const [isView, setIsView] = useState(false)
     const [search, setSearch] = useState('')
     const [filteredData, setFilteredData] = useState([]);
     const [allTemplateData, setAllTemplateData] = useState([]);
@@ -33,6 +34,10 @@ const LibraryManagement = () => {
             const term = search.toLowerCase();
             filtered = filtered.filter(item =>
                 item?.designe_name?.toLowerCase().includes(term)
+                || item?.category?.category_name?.toLowerCase().includes(term)
+                || item?.subCategory?.sub_category_name?.toLowerCase().includes(term)
+                || item?.nestedCategory?.nested_category_name?.toLowerCase().includes(term)
+                || item?.subNestedCategory?.sub_nested_category_name?.toLowerCase().includes(term)
             );
         }
         if (dateRange.startDate && dateRange.endDate) {
@@ -116,8 +121,14 @@ const LibraryManagement = () => {
         setDateRange({ startDate, endDate });
     };
 
-    const handleIsEdit = () => {
-        setIsEditData(true)
+    const handleIsEdit = (isView = false) => {
+        if (isView) {
+            setIsView(true);
+            setIsEditData(false);
+        } else {
+            setIsView(false);
+            setIsEditData(true);
+        }
     }
 
     return (
@@ -137,7 +148,13 @@ const LibraryManagement = () => {
                             <SearchBox search={search} setSearch={setSearch} placeholder="Search Template Name" />
                             <div className="content-right">
                                 <MyPicker handleDateFilter={handleRange} />
-                                <button type="button" className="template-upload" data-bs-toggle="modal" data-bs-target="#uploadTemplateModal">
+                                <button
+                                    type="button"
+                                    className="template-upload"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#uploadTemplateModal"
+                                    onClick={() => { setIsView(false); setIsEditData(false); setSelectedTemplate(null) }}
+                                >
                                     <img src="./images/templateUpload.svg" className="template" alt="upload icon" /> Upload Template
                                 </button>
                             </div>
@@ -198,9 +215,14 @@ const LibraryManagement = () => {
                                                     </td>
                                                     <td>${item.price || 0}</td>
                                                     <td className="eye-td">
-                                                        <a href="#" className="view-link">
+                                                        <button
+                                                            className="view-link bg-transparent border-0"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#uploadTemplateModal"
+                                                            onClick={() => { setSelectedTemplate(item), handleIsEdit(true) }}
+                                                        >
                                                             View <img src="./images/solid-eye.svg" className="eye-img" alt="View" />
-                                                        </a>
+                                                        </button>
                                                     </td>
                                                     <td>
                                                         <img
@@ -254,6 +276,7 @@ const LibraryManagement = () => {
                 onSubmit={handleSubmit}
                 onReset={handleClose}
                 isEdit={isEditData}
+                isView={isView}
             />
             <ActiveAndInActiveModal
                 onClose={handleClose}

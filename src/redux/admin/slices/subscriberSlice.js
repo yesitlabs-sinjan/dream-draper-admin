@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import * as api from "../Api";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import * as api from "../Api";
 
 function logouterror() {
     toast.error("Token Expired")
@@ -24,7 +24,7 @@ export const getAllSubscribers = createAsyncThunk(
     "admin/getAllSubscribers",
     async (_, { rejectWithValue }) => {
         try {
-             await checkLogin()
+            await checkLogin()
             const response = await api.fetchAllSubscribers();
             console.log("response", response)
             return response.data;
@@ -33,6 +33,21 @@ export const getAllSubscribers = createAsyncThunk(
         }
     }
 );
+
+
+export const removeSubscriber = createAsyncThunk(
+    "admin/removeSubscriber",
+    async (subscription_id, { rejectWithValue }) => {
+        try {
+            await checkLogin();
+            const response = await api.deleteSubscriber(subscription_id);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+);
+
 
 
 
@@ -62,7 +77,24 @@ const subscriberSlice = createSlice({
                     logouterror()
                 }
                 toast.error(action?.payload?.message)
-            });
+            })
+
+            .addCase(removeSubscriber.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(removeSubscriber.fulfilled, (state, action) => {
+                state.loading = false;
+                toast.success(action?.payload?.message || "Subscriber removed successfully")
+            })
+            .addCase(removeSubscriber.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || action.error.message;
+                if (action?.payload?.status == 403) {
+                    logouterror()
+                }
+                toast.error(action?.payload?.message)
+            })
     }
 })
 

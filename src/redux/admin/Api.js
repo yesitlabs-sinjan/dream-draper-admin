@@ -82,6 +82,7 @@ export const chagePlansDaitles = (formData) => API.post('/admin/update-plan', fo
 
 // Subscribers
 export const fetchAllSubscribers = () => API.get('/admin/get-subscribers')
+export const deleteSubscriber = (subscription_id) => API.delete(`/admin/delete-subscriber/${subscription_id}`)
 
 // Measuring Forms
 export const fetchAllMeasuringForms = () => API.get('/admin/get-forms');
